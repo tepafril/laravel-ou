@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    td:first-child {
+        @apply border sticky left-0  text-black;
+    }
+}
+
+.cs-box-league {
+    background: url(/img/box_team_bbg.gif) repeat-x 0 0;
+}
+.cs-box-date {
+    background: url(/img/box_date_bg.gif) repeat-x 0 0;
+}
+.result-box-date {
+    background: url(/img/midmbg.gif) repeat-x 0 0;
+}
+.cs-team-table td {
+    border: 1px solid #fff;
+    padding: 4px 0px;
+}
+.team-table-7m td {
+    border: 1px solid #06c;
+}
+.result-table-7m td {
+    border: 1px solid #c1c1c1;
+}
+.greeting {
+    animation: move 1500ms ease-in-out infinite;
+}
+
+@keyframes move {
+    0% {
+        color: red;
+        /* transform: scale(1.5); */
+        opacity: 0.25;
+    }
+    25% {
+        color: green;
+        /* transform: scale(1.65); */
+        opacity: 1;
+    }
+    50% {
+        color: blue;
+        /* transform: scale(1.65); */
+        opacity: 0.25;
+    }
+    75% {
+        color: purple;
+        /* transform: scale(1.65); */
+        opacity: 1;
+    }
+    100% {
+        color: red;
+        /* transform: scale(1.5); */
+        opacity: 0.25;
+    }
+}
