@@ -222,8 +222,8 @@ class FetcherController extends Controller
                         }
                     }
 
-                    $game->home_score = $home_score;
-                    $game->away_score = $away_score;
+                    $game->ft_home_score = $home_score;
+                    $game->ft_away_score = $away_score;
 
                     if($is_home_handicap){
                         if($home_score - $game->ah1_2 == $away_score){
