@@ -16,9 +16,67 @@ import { Head } from "@inertiajs/vue3";
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="relative inline-block text-left">
+                        <!-- Dropdown button -->
+                        <button
+                            @click="openDropdown = !openDropdown"
+                            class="inline-flex justify-between items-center w-full cursor-pointer px-4 py-2 text-lg font-medium text-gray-700 rounded-md shadow-sm hover:bg-gray-50"
+                        >
+                            <label tabindex="0" class="btn m-1 cursor-pointer"
+                                >From:
+                                <span class="text-red-600 mr-4">{{
+                                    formatDate(selectedDate.start)
+                                }}</span>
+                                To:
+                                <span class="text-red-600">{{
+                                    formatDate(selectedDate.end)
+                                }}</span>
+                            </label>
+                        </button>
+
+                        <!-- Dropdown menu with datepicker -->
+                        <div
+                            v-if="openDropdown"
+                            class="absolute z-10 mt-2 bg-white border border-gray-300 rounded-md shadow-lg max-w-72"
+                        >
+                            <DatePicker
+                                borderless
+                                v-model.range="selectedDate"
+                                mode="date"
+                            />
+                            <div class="p-2 flex justify-end">
+                                <button
+                                    type="button"
+                                    class="px-3 py-2 text-sm font-medium text-center text-blue-800 rounded-lg focus:outline-none"
+                                    @click="openDropdown = false"
+                                >
+                                    Close
+                                </button>
+                                <button
+                                    type="button"
+                                    class="px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    @click="
+                                        () => {
+                                            openDropdown = false;
+                                            filterData();
+                                        }
+                                    "
+                                >
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="text-gray-900">
+                        <div
+                            v-if="isLoading"
+                            class="flex items-center justify-center py-10"
+                        >
+                            <Loading />
+                        </div>
                         <!-- Table -->
-                        <div class="gap-4 max-h-screen overflow-scroll">
+                        <div v-else class="gap-4 max-h-screen overflow-scroll">
                             <!-- Lucky Sport -->
                             <div
                                 id="cs-container"
@@ -29,7 +87,7 @@ import { Head } from "@inertiajs/vue3";
                                     class="font-bold text-white flex items-center justify-center bg-[#3e6fa7] border-[#679898] border-t"
                                 >
                                     <div class="w-2/12 text-center">
-                                        Kick Off
+                                        Time/Score
                                     </div>
 
                                     <div
@@ -38,7 +96,7 @@ import { Head } from "@inertiajs/vue3";
                                         <div
                                             class="h-[72px] flex items-center justify-center"
                                         >
-                                            FT
+                                            S2
                                         </div>
                                     </div>
 
@@ -48,7 +106,7 @@ import { Head } from "@inertiajs/vue3";
                                         <div
                                             class="h-[72px] flex items-center justify-center border-[#679898] border-b"
                                         >
-                                            Home
+                                            Lucksport
                                         </div>
                                     </div>
                                     <div
@@ -57,7 +115,7 @@ import { Head } from "@inertiajs/vue3";
                                         <div
                                             class="h-[72px] flex items-center justify-center border-[#679898] border-b"
                                         >
-                                            Away
+                                            7msport
                                         </div>
                                     </div>
                                     <div
@@ -104,29 +162,39 @@ import { Head } from "@inertiajs/vue3";
                                             <div
                                                 class="cs-box-league text-black font-bold h-[29px] px-2 flex flex-row items-center"
                                             >
+                                                <div class="w-3/12"></div>
                                                 <div
-                                                    class="w-[7px] h-[22px] bg-[url('/img/rp_bg.png')] m-[0px_0px_0px_18px]"
-                                                    :style="`background-color:#${timeMatch.bg_color}`"
-                                                ></div>
-                                                <div class="ml-2">
-                                                    <span class="mr-8">
-                                                        {{
-                                                            timeMatch.league_short
-                                                        }}</span
-                                                    >
+                                                    class="w-3/12 flex h-[22px]"
+                                                >
+                                                    <div
+                                                        class="w-[7px] h-[22px] bg-[url('/img/rp_bg.png')] m-[0px_0px_0px_0px]"
+                                                        :style="`background-color:#${timeMatch.bg_color}`"
+                                                    ></div>
+
+                                                    <div class="ml-2">
+                                                        <span class="mr-8">
+                                                            {{
+                                                                timeMatch.league_short
+                                                            }}</span
+                                                        >
+                                                    </div>
                                                 </div>
-                                                <span class="mr-8"></span>
                                                 <div
-                                                    class="w-[7px] h-[22px] bg-[url('/img/rp_bg.png')] m-[0px_0px_0px_18px]"
-                                                    :style="`background-color:#${timeMatch.bg_color}`"
-                                                ></div>
-                                                <div class="ml-2">
-                                                    <span>
-                                                        {{
-                                                            timeMatch.league7m
-                                                        }}</span
-                                                    >
+                                                    class="w-3/12 flex h-[22px]"
+                                                >
+                                                    <div
+                                                        class="w-[7px] h-[22px] bg-[url('/img/rp_bg.png')] m-[0px_0px_0px_0px]"
+                                                        :style="`background-color:#${timeMatch.bg_color}`"
+                                                    ></div>
+                                                    <div class="ml-2">
+                                                        <span>
+                                                            {{
+                                                                timeMatch.league7m
+                                                            }}</span
+                                                        >
+                                                    </div>
                                                 </div>
+                                                <div class="w-3/12"></div>
                                             </div>
                                             <div
                                                 v-for="match in timeMatch.matches"
@@ -151,29 +219,37 @@ import { Head } from "@inertiajs/vue3";
                                                                         ?.game7m
                                                                         ?.status ==
                                                                     4
-                                                                        ? "FT"
+                                                                        ? `${
+                                                                              match
+                                                                                  ?.game7m
+                                                                                  ?.ft_home_score ??
+                                                                              `?`
+                                                                          }-${
+                                                                              match
+                                                                                  ?.game7m
+                                                                                  ?.ft_away_score ??
+                                                                              `?`
+                                                                          }`
                                                                         : extractTime(
                                                                               match.gt
                                                                           )
                                                                 }}
                                                             </td>
 
-                                                            <td
-                                                                class="w-1/12 bg-[#f0f3f6]"
-                                                                rowspan="2"
-                                                            >
+                                                            <td class="w-1/12">
                                                                 {{
-                                                                    match
-                                                                        ?.game7m
-                                                                        ?.ft_home_score ??
-                                                                    `?`
-                                                                }}
-                                                                -
-                                                                {{
-                                                                    match
-                                                                        ?.game7m
-                                                                        ?.ft_away_score ??
-                                                                    `?`
+                                                                    Number(
+                                                                        match
+                                                                            ?.game7m
+                                                                            ?.f20
+                                                                    ) <= 0
+                                                                        ? `${
+                                                                              match
+                                                                                  ?.game7m
+                                                                                  ?.f20 ??
+                                                                              ""
+                                                                          }`
+                                                                        : ""
                                                                 }}
                                                             </td>
 
@@ -188,8 +264,9 @@ import { Head } from "@inertiajs/vue3";
                                                             <td class="w-3/12">
                                                                 {{
                                                                     match
-                                                                        ?.away_team
-                                                                        ?.english
+                                                                        ?.game7m
+                                                                        ?.home_team
+                                                                        ?.name
                                                                 }}
                                                             </td>
                                                             <td
@@ -222,12 +299,27 @@ import { Head } from "@inertiajs/vue3";
                                                         <tr
                                                             class="bg-[#f0f3f6] text-black text-center cursor-pointer hover:bg-purple-500 hover:bg-opacity-30"
                                                         >
+                                                            <td class="w-1/12">
+                                                                {{
+                                                                    Number(
+                                                                        match
+                                                                            ?.game7m
+                                                                            ?.f20
+                                                                    ) > 0
+                                                                        ? `${
+                                                                              match
+                                                                                  ?.game7m
+                                                                                  ?.f20 ??
+                                                                              ""
+                                                                          }`
+                                                                        : ""
+                                                                }}
+                                                            </td>
                                                             <td class="w-3/12">
                                                                 {{
                                                                     match
-                                                                        ?.game7m
-                                                                        ?.home_team
-                                                                        ?.name
+                                                                        ?.away_team
+                                                                        ?.english
                                                                 }}
                                                             </td>
 
@@ -272,6 +364,7 @@ import Fuse from "fuse.js";
 
 import { Calendar, DatePicker } from "v-calendar";
 import "v-calendar/style.css";
+import Loading from "@/Components/Loading.vue";
 
 const fuseOptions = {
     threshold: 0.3,
@@ -285,9 +378,11 @@ export default defineComponent({
     components: {
         Calendar,
         DatePicker,
+        Loading,
     },
     data() {
         return {
+            openDropdown: false,
             getHandicap,
             HANDICAP,
             formatDate,
@@ -416,6 +511,8 @@ export default defineComponent({
                     index++;
                 });
                 this.matches = filteredDateMatches;
+
+                this.isLoading = false;
             } catch (e) {
                 //
             }
@@ -514,10 +611,11 @@ export default defineComponent({
                 this.selectedDate.start,
                 this.selectedDate.end
             );
-            await this.fetch7mGames(
-                this.selectedDate.start,
-                this.selectedDate.end
-            );
+            this.isLoading = false;
+            // await this.fetch7mGames(
+            //     this.selectedDate.start,
+            //     this.selectedDate.end
+            // );
         },
     },
     async mounted() {
@@ -526,7 +624,7 @@ export default defineComponent({
             this.selectedDate.start,
             this.selectedDate.end
         );
-        await this.fetch7mGames(this.selectedDate.start, this.selectedDate.end);
+        // await this.fetch7mGames(this.selectedDate.start, this.selectedDate.end);
         // this.autoSearch()
     },
 });

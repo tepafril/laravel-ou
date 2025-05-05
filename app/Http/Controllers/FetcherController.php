@@ -194,8 +194,8 @@ class FetcherController extends Controller
             if($game_date == null){
                 $game_date = date('Y-m-d');
             }
-            echo $game_date . '<br/>';
-            $result = file_get_contents('index_en.js');
+            // echo $game_date . '<br/>';
+            $result = file_get_contents('https://data.7msport.com/result/' . $game_date . '/index_en.js');
             $results = $this->_convertJavaScriptFileToPHPArrays($result);
 
             for ($i=0; $i< count($results['Team_B_Arr']); $i++){
