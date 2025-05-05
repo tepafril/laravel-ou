@@ -17,11 +17,11 @@ use Carbon\Carbon;
 
 class FetcherController extends Controller
 {
-    public function fetch($game_date = null)
+    public function fetchResult($game_date = null)
     {
-        set_time_limit(240);
+        set_time_limit(480);
         if($game_date == null){
-            $game_date = date('Y-m-d');
+            $game_date = date('Y-m-d', strtotime('-1 day'));
         }
         $url = 'https://px-crowns2.7mdt.com/result/'. $game_date .'/en.js';
 
@@ -184,7 +184,7 @@ class FetcherController extends Controller
         $this->fetch7mLive($request);
     }
 
-    public function fetchResult($game_date = null)
+    public function fetchResultV2($game_date = null)
     {
         try{
             if($game_date == null){
@@ -311,6 +311,7 @@ class FetcherController extends Controller
 
     public function fetchGame(Request $request)
     {
+        set_time_limit(480);
         try{
             $odds_config = file_get_contents('https://am.lucksport.com/xml/odds_config.xml');
             $odds_config_arr = json_decode(json_encode((array)simplexml_load_string($odds_config)),true);
@@ -431,6 +432,7 @@ class FetcherController extends Controller
 
     public function fetchOU(Request $request)
     {
+        set_time_limit(480);
         try{
             $xml_string = file_get_contents("https://am.lucksport.com/xml/overunder.xml");
             $array = json_decode(json_encode((array)simplexml_load_string($xml_string)),true);
@@ -493,6 +495,7 @@ class FetcherController extends Controller
 
     public function fetch7M(Request $request)
     {
+        set_time_limit(480);
         try{
             $fen = file_get_contents('https://ctc-live.7m.com.cn/datafile/fen.js');
 
@@ -604,7 +607,9 @@ class FetcherController extends Controller
         }
     }
 
-    public function fetch7mLive(Request $request){
+    public function fetch7mLive(Request $request)
+    {
+        set_time_limit(480);
         try{
             $sxl = file_get_contents('https://ctc-live.7m.com.cn/datafile/sxl.js');
 

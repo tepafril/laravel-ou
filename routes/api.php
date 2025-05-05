@@ -22,9 +22,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('fetch', [FetcherController::class, 'fetch']);
-Route::get('fetch/{game_date}', [FetcherController::class, 'fetch']);
-Route::get('fetchAll', [FetcherController::class, 'fetchAll']);
+Route::get('fetchResult', [FetcherController::class, 'fetchResult']);
+Route::get('fetchResult/{game_date}', [FetcherController::class, 'fetchResult']);
+
+Route::get('fetchGame', [FetcherController::class, 'fetchGame']);
+Route::get('fetchOU', [FetcherController::class, 'fetchOU']);
+Route::get('fetch7M', [FetcherController::class, 'fetch7M']);
+Route::get('fetch7mLive', [FetcherController::class, 'fetch7mLive']);
 
 Route::get('fetch-game', [FetcherController::class, 'fetchGame']);
 Route::get('fetchResult', [FetcherController::class, 'fetchResult']);
