@@ -158,13 +158,13 @@ class FetcherController extends Controller
             }else{
                 $game7m = Game7m::where('id', $gameId)->first();
 
-                $final_score = explode('-', $parts[12]);
-                $game7m->ft_home_score = $final_score[0];
-                $game7m->ft_away_score = $final_score[1];
+                $final_score = strlen($parts[12]) >= 3 ? explode('-', $parts[12]) : null;
+                $game7m->ft_home_score = $final_score[0] ?? null;
+                $game7m->ft_away_score = $final_score[1] ?? null;
 
-                $ht_score = explode('-', $parts[13]);
-                $game7m->ht_home_score = $ht_score[0];
-                $game7m->ht_away_score = $ht_score[1];
+                $ht_score = strlen($parts[13]) >= 3 ? explode('-', $parts[13]) : null;
+                $game7m->ht_home_score = $ht_score[0] ?? null;
+                $game7m->ht_away_score = $ht_score[1] ?? null;
 
                 $game7m->gd   = $startTime;
                 $game7m->gt   = $startTime;
