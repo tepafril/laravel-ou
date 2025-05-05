@@ -72,7 +72,7 @@ class FetcherController extends Controller
                 $league->save();
             }
 
-            $homeTeam = Team7m::find($parts[7]);
+            $homeTeam = Team7m::find($parts[5]);
             if (!$homeTeam) {
                 $homeTeam = new Team7m();
                 $homeTeam->id = $parts[5]; // set manually
