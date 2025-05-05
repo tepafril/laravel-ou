@@ -173,6 +173,9 @@ class FetcherController extends Controller
                 $game7m->save();
             }
         }
+
+        $text = 'Result: ' . count($rows) . ' records found. ';
+        echo 'Ok! ' . $text;
     }
 
     public function fetchAll(Request $request)
@@ -423,6 +426,7 @@ class FetcherController extends Controller
 
             $text = 'Correct Score Matches: ' . count($odds_config_arr["Fixture"]) . ' records found. ';
             file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
+            echo 'Ok! ' . $text;
         }
         catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -486,6 +490,7 @@ class FetcherController extends Controller
 
             $text = 'Correct Score Odds: ' . count($array["Fixture"]) . ' records found. ';
             file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
+            echo 'Ok! ' . $text;
         }
         catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -600,6 +605,8 @@ class FetcherController extends Controller
             // } 
 
             // print_r($result);
+
+            echo 'Ok! ' . $text;
         }
         catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -637,6 +644,7 @@ class FetcherController extends Controller
 
             $text = 'AsiaHandicap Live: ' . count($matches) . ' records found. ';
             file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
+            echo 'Ok! ' . $text;
         }
         catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
