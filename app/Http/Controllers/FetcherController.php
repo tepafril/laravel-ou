@@ -175,6 +175,7 @@ class FetcherController extends Controller
         }
 
         $text = 'Result: ' . count($rows) . ' records found. ';
+        file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
         echo 'Ok! ' . $text;
     }
 

@@ -30,10 +30,6 @@ Route::get('fetchOU', [FetcherController::class, 'fetchOU']);
 Route::get('fetch7M', [FetcherController::class, 'fetch7M']);
 Route::get('fetch7mLive', [FetcherController::class, 'fetch7mLive']);
 
-Route::get('fetch-game', [FetcherController::class, 'fetchGame']);
-Route::get('fetchResult', [FetcherController::class, 'fetchResult']);
-Route::get('fetchResult/{game_date}', [FetcherController::class, 'fetchResult']);
-Route::get('fetch-ou', [FetcherController::class, 'fetchOU']);
 
 Route::get('similar', [CompareController::class, 'matchSimilarTeams']);
 

@@ -403,7 +403,7 @@ export default defineComponent({
                             temp[i - 1].matches.push(match);
                         } else {
                             lastItem = match.league.english;
-                            console.log("league", match.game7m.league.bg_color);
+
                             temp[i] = {
                                 bg_color: match.game7m.league.bg_color,
                                 league7m: match.game7m.league.name,
@@ -489,21 +489,12 @@ export default defineComponent({
                 gd: x.item.gd,
             }));
 
-            // console.log("homeSearchResultIds", homeSearchResultIds)
-            // console.log("awaySearchResultIds", awaySearchResultIds)
-            // console.log("================================================================")
             await sleep(200);
             const indices = findMatchingIndices(
                 homeSearchResultIds,
                 awaySearchResultIds
             );
             if (indices.length > 0) {
-                console.log(
-                    homeSearchResultIds[indices[0][0]].home_team.name,
-                    " <> ",
-                    this.searchableMatches[i].home_team.english
-                );
-
                 this.dialog = {
                     league: this.searchableMatches[this.autoSearchIndex].league,
                     homeTeam:
@@ -518,9 +509,6 @@ export default defineComponent({
                         homeSearchResultIds[indices[0][0]].gd
                     ),
                 };
-                console.log(
-                    "================================================================"
-                );
             }
             this.showModal = !this.showModal;
             this.autoSearchIndex++;
