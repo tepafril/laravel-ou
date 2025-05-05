@@ -174,9 +174,9 @@ class FetcherController extends Controller
             }
         }
 
-        $text = 'Result: ' . count($rows) . ' records found. ';
+        $text = 'Ok! [5] fetchResult(): ' . count($rows) . ' records found. ';
         file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
-        echo 'Ok! ' . $text;
+        echo $text;
     }
 
     public function fetchAll(Request $request)
@@ -425,9 +425,9 @@ class FetcherController extends Controller
                 }
             }
 
-            $text = 'Correct Score Matches: ' . count($odds_config_arr["Fixture"]) . ' records found. ';
+            $text = 'Ok! [1] fetchGame(): ' . count($odds_config_arr["Fixture"]) . ' records found. ';
             file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
-            echo 'Ok! ' . $text;
+            echo $text;
         }
         catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -489,9 +489,9 @@ class FetcherController extends Controller
                 // }
             }
 
-            $text = 'Correct Score Odds: ' . count($array["Fixture"]) . ' records found. ';
+            $text = 'Ok! [2] fetchOU(): ' . count($array["Fixture"]) . ' records found. ';
             file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
-            echo 'Ok! ' . $text;
+            echo $text;
         }
         catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -579,7 +579,7 @@ class FetcherController extends Controller
                 }
             }
 
-            $text = 'AsiaHandicap Matches: ' . count($matches) . ' records found. ';
+            $text = 'Ok! [3] fetch7M(): ' . count($matches) . ' records found. ';
             file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
             // array(21) { 
             //     [0]=> string(6) "SPA D1" 
@@ -607,7 +607,7 @@ class FetcherController extends Controller
 
             // print_r($result);
 
-            echo 'Ok! ' . $text;
+            echo $text;
         }
         catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -643,9 +643,9 @@ class FetcherController extends Controller
                 // echo "<br/><br/><br/>";
             }
 
-            $text = 'AsiaHandicap Live: ' . count($matches) . ' records found. ';
+            $text = 'OK! [4] fetch7mLive(): ' . count($matches) . ' records found. ';
             file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
-            echo 'Ok! ' . $text;
+            echo $text;
         }
         catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
