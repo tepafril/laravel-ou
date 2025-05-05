@@ -104,7 +104,7 @@ class CompareController extends Controller
 
         $accurate_rate = ($av / $total) * 100;
 
-        $text = 'Ok! [6] similar(): ' . count($total) . ' records found. ';
+        $text = 'Ok! [6] similar(): ' . $total . ' records found. ';
         file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
         
         echo($total);
