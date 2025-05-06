@@ -51,23 +51,13 @@ class ViewController extends Controller
     public function getCorrectscoreMatch($start_date = null, $end_date = null, $exclude7m = ''){
         if($start_date == null && $end_date == null)
         {
-            if($exclude7m){
-                $games = Game::with(['away_team', 'home_team', 'league'])
-                    ->where('gd', '>=', now())
-                    ->where('game7m_id', '=', NULL)
-                    ->where('home_o2', '!=', NULL)
-                    ->where('away_o2', '!=', NULL)
-                    ->orderBy('gt', 'asc')
-                    ->get();
-            }else{
-                $games = Game::with(['away_team', 'home_team', 'league'])
-                    ->where('gd', '>=', now())
-                    ->where('home_o2', '!=', NULL)
-                    ->where('away_o2', '!=', NULL)
-                    ->orderBy('gt', 'asc')
-                    ->get();
-            }
-        
+            $games = Game::with(['away_team', 'home_team', 'league'])
+                ->where('gd', '>=', date('Y-m-d'))
+                ->where('home_o2', '!=', NULL)
+                ->where('away_o2', '!=', NULL)
+                ->orderBy('gt', 'asc')
+                ->get();
+                
             return response()->json($games, 200);
         }
         else if($start_date == null)
@@ -78,19 +68,15 @@ class ViewController extends Controller
             $end_date = date('Y-m-d');
         }
 
-        if($exclude7m == 'exclude'){
-            $games = Game::with(['away_team', 'home_team', 'league'])
-                ->where('game7m_id', '=', NULL)
-                ->where('gd', '>=', $start_date)
-                ->where('gd', '<=', $end_date)
-                ->orderBy('gt', 'asc')->get();
-        }else{
-            $games = Game::with(['away_team', 'home_team', 'league', 'game7m', 'game7m.home_team', 'game7m.away_team', 'game7m.league'])
-                ->where('game7m_id', '!=', NULL)
-                // ->where('gd', '>=', $start_date)
-                // ->where('gd', '<=', $end_date)
-                ->orderBy('gt', 'asc')->get();
-        }
+        
+        $games = Game::with(['away_team', 'home_team', 'league', 'game7m', 'game7m.home_team', 'game7m.away_team', 'game7m.league'])
+            ->where('game7m_id', '!=', NULL)
+            ->where('gd', '>=', $start_date)
+            ->where('gd', '<=', $end_date)
+            // ->where('gd', '>=', $start_date)
+            // ->where('gd', '<=', $end_date)
+            ->orderBy('gt', 'asc')->get();
+            
 
         return response()->json($games, 200);
     }
