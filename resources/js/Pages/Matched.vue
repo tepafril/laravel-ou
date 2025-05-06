@@ -246,9 +246,11 @@ import { Head } from "@inertiajs/vue3";
                                                                             ?.f20
                                                                     ) <= 0
                                                                         ? `${
-                                                                              match
-                                                                                  ?.game7m
-                                                                                  ?.f20 ??
+                                                                              getHandicapByValue(
+                                                                                  match
+                                                                                      ?.game7m
+                                                                                      ?.f20
+                                                                              ) ??
                                                                               ""
                                                                           }`
                                                                         : ""
@@ -309,9 +311,11 @@ import { Head } from "@inertiajs/vue3";
                                                                             ?.f20
                                                                     ) > 0
                                                                         ? `${
-                                                                              match
-                                                                                  ?.game7m
-                                                                                  ?.f20 ??
+                                                                              getHandicapByValue(
+                                                                                  match
+                                                                                      ?.game7m
+                                                                                      ?.f20
+                                                                              ) ??
                                                                               ""
                                                                           }`
                                                                         : ""
@@ -367,6 +371,7 @@ import Fuse from "fuse.js";
 import { Calendar, DatePicker } from "v-calendar";
 import "v-calendar/style.css";
 import Loading from "@/Components/Loading.vue";
+import { getHandicapByValue } from "@/Types/func/func";
 
 const fuseOptions = {
     threshold: 0.3,
@@ -384,6 +389,7 @@ export default defineComponent({
     },
     data() {
         return {
+            getHandicapByValue,
             openDropdown: false,
             getHandicap,
             HANDICAP,

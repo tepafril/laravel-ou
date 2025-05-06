@@ -97,7 +97,7 @@ export const getHandicapByValue = (value) => {
     9
   ];
 
-  const index = arr.findIndex((v) => v == value)
+  const index = arr.findIndex((v) => v == Math.abs(value))
 
   return index >= 0 ? getHandicap(index) : null;
 }
