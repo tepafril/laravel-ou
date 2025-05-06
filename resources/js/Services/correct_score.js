@@ -48,10 +48,15 @@ export async function getCorrectScoreMatch(start_date = new Date(), end_date = n
   }
 }
 
-export async function getUnmatched(start_date = new Date(), end_date = new Date(), exclude7m = false) {
+export async function getUnmatched(start_date = undefined, end_date = undefined) {
     try {
-      const response = await client().get(`unmatched/${formatYMD(start_date)}/${formatYMD(end_date)}/${exclude7m == true ? 'exclude':''}`)
-      return response.data
+      if(start_date && end_date){
+        const response = await client().get(`unmatched/${formatYMD(start_date)}/${formatYMD(end_date)}}`)
+        return response.data
+      }else{
+        const response = await client().get(`unmatched`)
+        return response.data
+      }
     } catch (error) {
       console.error(error)
       throw apiError(error, {})
