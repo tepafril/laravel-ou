@@ -778,7 +778,7 @@ export default defineComponent({
             autoSearchIndex: 0,
 
             selectedDate: {
-                start: new Date(new Date().getTime() + 86400000 - 4),
+                start: new Date(new Date().getTime() - 86400000 * 4),
                 end: new Date(),
             },
 
