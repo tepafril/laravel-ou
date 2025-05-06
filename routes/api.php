@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FetcherController;
 use App\Http\Controllers\CompareController;
 use App\Http\Controllers\ViewController;
-
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,5 +49,9 @@ Route::get('/correctscore-match/{start_date}/{end_date}/{exclude7m}',       [Vie
 
 Route::get('/unmatched',                                           [ViewController::class, 'getUnmatched']);
 Route::get('/unmatched/{start_date}/{end_date}',                   [ViewController::class, 'getUnmatched']);
+
+
+Route::get('/dashboard',                                           [DashboardController::class, 'dashboard']);
+Route::get('/dashboard/{start_date}/{end_date}',                   [DashboardController::class, 'dashboard']);
 
 

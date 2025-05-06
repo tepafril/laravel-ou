@@ -84,3 +84,20 @@ export async function setMatchingGame(body) {
     throw apiError(error, {})
   }
 }
+
+
+export async function getDashboard(start_date = null, end_date = null) {
+  try {
+    if(start_date == null && end_date == null){
+      const response = await client().get(`dashboard`)
+      return response.data
+    }
+
+    const response = await client().get(`dashboard/${formatYMD(start_date)}/${formatYMD(end_date)}/${exclude7m == true ? 'exclude':''}`)
+    return response.data
+
+  } catch (error) {
+    console.error(error)
+    throw apiError(error, {})
+  }
+}
