@@ -778,8 +778,8 @@ export default defineComponent({
             autoSearchIndex: 0,
 
             selectedDate: {
-                start: new Date(),
-                end: new Date(new Date().getTime() + 86400000 * 10),
+                start: new Date(new Date().getTime() + 86400000 - 4),
+                end: new Date(),
             },
 
             dialog: {},
