@@ -51,7 +51,7 @@ export async function getCorrectScoreMatch(start_date = new Date(), end_date = n
 export async function getUnmatched(start_date = undefined, end_date = undefined) {
     try {
       if(start_date && end_date){
-        const response = await client().get(`unmatched/${formatYMD(start_date)}/${formatYMD(end_date)}}`)
+        const response = await client().get(`unmatched/${formatYMD(start_date)}/${formatYMD(end_date)}`)
         return response.data
       }else{
         const response = await client().get(`unmatched`)
