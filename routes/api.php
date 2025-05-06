@@ -34,6 +34,9 @@ Route::get('fetch7M', [FetcherController::class, 'fetch7M']);
 Route::get('fetch7mLive', [FetcherController::class, 'fetch7mLive']);
 
 
+
+Route::put('confirmMatch/{game_id}/{game7m_id}', [CompareController::class, 'confirmMatch']);
+
 Route::get('similar', [CompareController::class, 'matchSimilarTeams']);
 Route::get('similar/{start_date}', [CompareController::class, 'matchSimilarTeams']);
 

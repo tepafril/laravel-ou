@@ -106,3 +106,15 @@ export async function getDashboard(start_date = null, end_date = null) {
     throw apiError(error, {})
   }
 }
+
+
+export async function confirmMatch(gameId, game7mId) {
+  try {
+    const response = await client().put(`confirmMatch/${gameId}/${game7mId}`)
+    return response.data
+
+  } catch (error) {
+    console.error(error)
+    throw apiError(error, {})
+  }
+}

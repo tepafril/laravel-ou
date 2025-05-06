@@ -8,9 +8,55 @@ import { Head } from "@inertiajs/vue3";
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Unmatched Teams
-            </h2>
+            <div class="flex items-center">
+                <h2
+                    class="font-semibold text-xl text-gray-800 leading-tight mr-10"
+                >
+                    Unmatched Teams
+                </h2>
+
+                <Loading v-if="confirmMatchLoading" />
+                <div
+                    v-else-if="compare?.game != null && compare?.game7m != null"
+                >
+                    <span class="bg-yellow-500 text-white px-2 rounded-md">
+                        {{ compare?.game?.league?.english_short }}
+                    </span>
+                    <span class="bg-yellow-500 text-white px-2 rounded-md">
+                        {{ compare?.game7m?.league?.name }}
+                    </span>
+                    <span class="px-4"></span>
+                    <span class="bg-red-500 text-white px-2 rounded-md">
+                        {{ compare?.game?.home_team?.english }}
+                    </span>
+                    <span class="bg-red-500 text-white px-2 rounded-md">
+                        {{ compare?.game7m?.home_team?.name }}
+                    </span>
+                    <span class="px-2">VS</span>
+                    <span class="bg-blue-500 text-white px-2 rounded-md">
+                        {{ compare?.game?.away_team?.english }}
+                    </span>
+                    <span class="bg-blue-500 text-white px-2 rounded-md">
+                        {{ compare?.game7m?.away_team?.name }}
+                    </span>
+                    <div class="mt-4">
+                        <div class="flex justify-center w-full">
+                            <span
+                                class="cursor-pointer border border-slate-500 text-slate-500 py-2 px-4 rounded-md text-lg hover:bg-slate-500 hover:text-white"
+                                @click="compare = { game: null, game7m: null }"
+                            >
+                                Cancel
+                            </span>
+                            <span
+                                class="cursor-pointer border border-green-500 text-green-500 ml-2 py-2 px-4 rounded-md text-lg hover:bg-green-500 hover:text-white"
+                                @click="confirmMatched"
+                            >
+                                Confirm Matched
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </template>
 
         <div class="py-12">
@@ -169,9 +215,9 @@ import { Head } from "@inertiajs/vue3";
                                                             id="r403976"
                                                             class="bg-[#f0f3f6] text-black text-center cursor-pointer hover:bg-purple-500 hover:bg-opacity-30"
                                                             :class="[
-                                                                selectedId ==
-                                                                match.home_team
-                                                                    .id
+                                                                compare?.game
+                                                                    ?.id ==
+                                                                match?.id
                                                                     ? 'bg-purple-500 bg-opacity-30'
                                                                     : '',
                                                             ]"
@@ -182,7 +228,8 @@ import { Head } from "@inertiajs/vue3";
                                                                         .english,
                                                                     match
                                                                         .home_team
-                                                                        .id
+                                                                        .id,
+                                                                    match
                                                                 )
                                                             "
                                                         >
@@ -231,9 +278,9 @@ import { Head } from "@inertiajs/vue3";
                                                         <tr
                                                             class="bg-[#f0f3f6] text-black text-center cursor-pointer hover:bg-purple-500 hover:bg-opacity-30"
                                                             :class="[
-                                                                selectedId ==
-                                                                match.away_team
-                                                                    .id
+                                                                compare?.game
+                                                                    ?.id ==
+                                                                match?.id
                                                                     ? 'bg-purple-500 bg-opacity-30'
                                                                     : '',
                                                             ]"
@@ -244,7 +291,8 @@ import { Head } from "@inertiajs/vue3";
                                                                         .english,
                                                                     match
                                                                         .away_team
-                                                                        .id
+                                                                        .id,
+                                                                    match
                                                                 )
                                                             "
                                                         >
@@ -416,7 +464,18 @@ import { Head } from "@inertiajs/vue3";
                                                     </td>
                                                     <td
                                                         rowspan="2"
-                                                        class="text-right"
+                                                        class="text-right hover:bg-purple-300 cursor-pointer"
+                                                        :class="[
+                                                            compare?.game7m
+                                                                ?.id ==
+                                                            match?.id
+                                                                ? 'bg-purple-200'
+                                                                : '',
+                                                        ]"
+                                                        @click="
+                                                            compare.game7m =
+                                                                match
+                                                        "
                                                     >
                                                         <div>
                                                             {{
@@ -727,7 +786,7 @@ import { Head } from "@inertiajs/vue3";
 
 <script>
 import { defineComponent } from "vue";
-import { getUnmatched } from "@/Services/correct_score";
+import { confirmMatch, getUnmatched } from "@/Services/correct_score";
 import {
     extractTime,
     extractTime7m,
@@ -783,6 +842,13 @@ export default defineComponent({
             },
 
             dialog: {},
+
+            compare: {
+                game: null,
+                game7m: null,
+            },
+
+            confirmMatchLoading: false,
         };
     },
     watch: {
@@ -807,6 +873,22 @@ export default defineComponent({
         //
     },
     methods: {
+        async confirmMatched() {
+            this.confirmMatchLoading = true;
+            try {
+                console.log("this.compare", this.compare);
+                await confirmMatch(
+                    this.compare.game.id,
+                    this.compare.game7m.id
+                );
+                this.compare = { game: null, game7m: null };
+                this.filterData();
+            } catch (e) {
+                console.error(e);
+            } finally {
+                this.confirmMatchLoading = false;
+            }
+        },
         homeHidden(val) {
             if (val == 0) return "invisible";
         },
@@ -815,9 +897,11 @@ export default defineComponent({
             if (val == 1) return "invisible";
         },
 
-        searchThisItem(keyword, id) {
+        searchThisItem(keyword, id, game) {
             this.keyword = keyword;
             this.selectedId = id;
+            this.compare.game = game;
+            this.compare.game7m = null;
         },
 
         async getUnmatched(start_date = undefined, end_date = undefined) {

@@ -16,7 +16,7 @@ import { Head } from "@inertiajs/vue3";
         <div class="pt-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div
-                    class="bg-white min-h-[240px] max-h-[calc(100vh_-_180px)] overflow-hidden shadow-sm sm:rounded-lg"
+                    class="bg-white min-h-[400px] max-h-[calc(100vh_-_180px)] overflow-hidden shadow-sm sm:rounded-lg"
                 >
                     <div class="relative inline-block text-left">
                         <!-- Dropdown button -->

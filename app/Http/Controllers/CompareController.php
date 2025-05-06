@@ -10,6 +10,38 @@ use FuzzyWuzzy\Process;
 
 class CompareController extends Controller
 {
+    public function confirmMatch($game_id, $game7m_id){
+        $game = Game::where('id', $game_id)->with(['home_team', 'away_team', 'league'])->first();
+        $game7m = Game7m::where('id', $game7m_id)->with(['home_team', 'away_team', 'league'])->first();
+
+        if(is_null($game) == false && is_null($game7m) == false){
+            $game->game7m_id = $game7m_id;
+            $game->save();
+            
+            $game->home_team->team7m_id = $game7m->home_team->id;
+            $game->home_team->save();
+
+            $game->away_team->team7m_id = $game7m->home_team->id;
+            $game->away_team->save();
+
+            $game->league->league7m_id = $game7m->league->id;
+            $game->league->save();
+
+            $game7m->game_id = $game_id;
+            $game7m->save();
+            
+            $game7m->home_team->team_id = $game->home_team->id;
+            $game7m->home_team->save();
+
+            $game7m->away_team->team_id = $game->home_team->id;
+            $game7m->away_team->save();
+
+            $game7m->league->league_id = $game->league->id;
+            $game7m->league->save();
+
+            return response()->json([$game, $game7m]);
+        }
+    }
     
     public function matchSimilarTeams($start_date = null)
     {
