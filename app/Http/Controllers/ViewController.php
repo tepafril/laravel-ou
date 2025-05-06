@@ -104,6 +104,7 @@ class ViewController extends Controller
                     [
                         'games' => $games,
                         'game7ms' => $game7ms,
+                        'here we go ' => 'ho we gear'
                     ]
                 , 200);
         }
