@@ -88,7 +88,7 @@ class ViewController extends Controller
         {
             $games = Game::with(['away_team', 'home_team', 'league'])
                 ->where('game7m_id', '=', NULL)
-                
+                ->where('gd', '<=', now())
                 ->orderBy('gt', 'asc')
                 ->get();
 
@@ -118,13 +118,15 @@ class ViewController extends Controller
 
         $game7ms = Game7m::with(['away_team', 'home_team', 'league'])
             ->where('game_id', '=', NULL)
-            ->where('gd', $start_date)
+            ->where('gd', '>=', $start_date)
+            ->where('gd', '<=', $end_date)
             ->orderBy('gt', 'asc')
             ->get();
     
         $games = Game::with(['away_team', 'home_team', 'league'])
             ->where('game7m_id', '=', NULL)
-            ->where('gd', $start_date)
+            ->where('gd', '>=', $start_date)
+            ->where('gd', '<=', $end_date)
             ->orderBy('gt', 'asc')
             ->get();
             
