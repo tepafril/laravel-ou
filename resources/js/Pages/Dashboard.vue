@@ -21,6 +21,13 @@ import { Head } from "@inertiajs/vue3";
                 >
                     <div class="p-0 text-gray-900">
                         <div
+                            v-if="isLoading"
+                            class="flex items-center justify-center py-10"
+                        >
+                            <Loading />
+                        </div>
+                        <div
+                            v-else
                             class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-3 sm:px-8"
                         >
                             <!-- Total Games -->
@@ -132,7 +139,13 @@ export default defineComponent({
         },
 
         async getDashboard() {
-            this.dashboard = await getDashboard();
+            try {
+                this.isLoading = true;
+                this.dashboard = await getDashboard();
+            } catch (e) {
+            } finally {
+                this.isLoading = false;
+            }
         },
     },
     mounted() {
