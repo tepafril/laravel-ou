@@ -16,9 +16,67 @@ import { Head } from "@inertiajs/vue3";
         <div class="py-12">
             <div class="mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="relative inline-block text-left">
+                        <!-- Dropdown button -->
+                        <button
+                            @click="openDropdown = !openDropdown"
+                            class="inline-flex justify-between items-center w-full cursor-pointer px-4 py-2 text-lg font-medium text-gray-700 rounded-md shadow-sm hover:bg-gray-50"
+                        >
+                            <label tabindex="0" class="btn m-1 cursor-pointer"
+                                >From:
+                                <span class="text-red-600 mr-4">{{
+                                    formatDate(selectedDate.start)
+                                }}</span>
+                                To:
+                                <span class="text-red-600">{{
+                                    formatDate(selectedDate.end)
+                                }}</span>
+                            </label>
+                        </button>
+
+                        <!-- Dropdown menu with datepicker -->
+                        <div
+                            v-if="openDropdown"
+                            class="absolute z-10 mt-2 bg-white border border-gray-300 rounded-md shadow-lg max-w-72"
+                        >
+                            <DatePicker
+                                borderless
+                                v-model.range="selectedDate"
+                                mode="date"
+                            />
+                            <div class="p-2 flex justify-end">
+                                <button
+                                    type="button"
+                                    class="px-3 py-2 text-sm font-medium text-center text-blue-800 rounded-lg focus:outline-none"
+                                    @click="openDropdown = false"
+                                >
+                                    Close
+                                </button>
+                                <button
+                                    type="button"
+                                    class="px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    @click="
+                                        () => {
+                                            openDropdown = false;
+                                            filterData();
+                                        }
+                                    "
+                                >
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="text-gray-900">
+                        <div
+                            v-if="isLoading"
+                            class="flex items-center justify-center py-10"
+                        >
+                            <Loading />
+                        </div>
                         <!-- Table -->
-                        <div class="grid grid-cols-2">
+                        <div v-else class="grid grid-cols-2">
                             <!-- Lucky Sport -->
                             <div
                                 id="cs-container"
@@ -669,7 +727,7 @@ import { Head } from "@inertiajs/vue3";
 
 <script>
 import { defineComponent } from "vue";
-import { fetch7mGames, getUnmatched } from "@/Services/correct_score";
+import { getUnmatched } from "@/Services/correct_score";
 import {
     extractTime,
     extractTime7m,
@@ -683,6 +741,7 @@ import Fuse from "fuse.js";
 
 import { Calendar, DatePicker } from "v-calendar";
 import "v-calendar/style.css";
+import Loading from "@/Components/Loading.vue";
 
 const fuseOptions = {
     threshold: 0.3,
@@ -696,6 +755,7 @@ export default defineComponent({
     components: {
         Calendar,
         DatePicker,
+        Loading,
     },
     data() {
         return {
@@ -703,6 +763,7 @@ export default defineComponent({
             formatDate,
             extractTime,
             extractTime7m,
+            openDropdown: false,
             matches: [],
             matches7m: [],
             searchableMatches7m: [],
@@ -846,32 +907,6 @@ export default defineComponent({
                 // End 7m
             } catch (e) {
                 //
-            }
-        },
-
-        async fetch7mGames(start_date = undefined, end_date = undefined) {
-            try {
-                let filteredDateMatches = [];
-                const matches = await fetch7mGames(start_date, end_date);
-                this.searchableMatches7m = _.cloneDeep(matches);
-                let lastItem = "";
-                let i = 0;
-                matches.forEach((match) => {
-                    if (lastItem == match.gd) {
-                        filteredDateMatches[i - 1].matches.push(match);
-                    } else {
-                        lastItem = match.gd;
-                        filteredDateMatches[i] = {
-                            gd: match.gd,
-                            matches: [match],
-                        };
-                        i++;
-                    }
-                });
-                this.matches7m = filteredDateMatches;
-                this.filteredMatches7m = _.cloneDeep(this.matches7m);
-            } catch (e) {
-                //
             } finally {
                 this.isLoading = false;
             }
@@ -937,7 +972,6 @@ export default defineComponent({
         },
 
         async filterData() {
-            this.isLoading = true;
             await this.getUnmatched(
                 this.selectedDate.start,
                 this.selectedDate.end
@@ -947,7 +981,6 @@ export default defineComponent({
     async mounted() {
         this.loadingSvg = Math.floor(Math.random() * 10);
         await this.getUnmatched(this.selectedDate.start, this.selectedDate.end);
-        // this.autoSearch()
     },
 });
 </script>

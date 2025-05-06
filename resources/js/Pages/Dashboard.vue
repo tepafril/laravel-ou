@@ -1,9 +1,3 @@
-<script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { getDashboard } from "@/Services/correct_score";
-import { Head } from "@inertiajs/vue3";
-</script>
-
 <template>
     <Head title="Dashboard" />
 
@@ -123,6 +117,11 @@ import { Head } from "@inertiajs/vue3";
 
 <script>
 import { defineComponent } from "vue";
+import Loading from "@/Components/Loading.vue";
+import { getDashboard } from "@/Services/correct_score";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+
+import { Head } from "@inertiajs/vue3";
 
 export default defineComponent({
     data() {
@@ -150,6 +149,11 @@ export default defineComponent({
     },
     mounted() {
         this.getDashboard();
+    },
+    components: {
+        Loading,
+        Head,
+        AuthenticatedLayout,
     },
 });
 </script>
