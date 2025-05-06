@@ -35,6 +35,7 @@ Route::get('fetch7mLive', [FetcherController::class, 'fetch7mLive']);
 
 
 Route::get('similar', [CompareController::class, 'matchSimilarTeams']);
+Route::get('similar/{start_date}', [CompareController::class, 'matchSimilarTeams']);
 
 
 

@@ -11,14 +11,18 @@ use FuzzyWuzzy\Process;
 class CompareController extends Controller
 {
     
-    public function matchSimilarTeams(Request $request)
+    public function matchSimilarTeams($start_date = null)
     {
+        $date = date('Y-m-d');
+        if($start_date != null){
+            $date = $start_date;
+        }
         // $perc = 0;
         // similar_text('JPN3', 'JPN D3', $perc);
         // echo $perc;
         // echo '<br/>';
-        $games = Game::where('gd', date('y-m-d'))->with(['league', 'away_team', 'home_team', 'game7m', 'game7m.league', 'game7m.away_team', 'game7m.home_team'])->get();
-        $game7ms = Game7m::where('gd', date('y-m-d'))->with(['league', 'away_team', 'home_team', 'game', 'game.league', 'game.away_team', 'game.home_team'])->get();
+        $games = Game::where('gd', $date)->with(['league', 'away_team', 'home_team', 'game7m', 'game7m.league', 'game7m.away_team', 'game7m.home_team'])->get();
+        $game7ms = Game7m::where('gd', $date)->with(['league', 'away_team', 'home_team', 'game', 'game.league', 'game.away_team', 'game.home_team'])->get();
         
         $matches = [];
         foreach ($games as $game) {
