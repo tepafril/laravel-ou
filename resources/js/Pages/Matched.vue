@@ -411,7 +411,7 @@ export default defineComponent({
 
             selectedDate: {
                 start: new Date(),
-                end: new Date(new Date().getTime() + 86400000 * 10),
+                end: new Date(),
             },
 
             dialog: {},
