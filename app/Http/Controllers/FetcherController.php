@@ -265,7 +265,7 @@ class FetcherController extends Controller
                     echo '<br/>';
                 }
             }
-            $text = 'Results: ' . count($results['Team_B_Arr']) . ' records found. ';
+            $text = 'Ok! [7] : fetchResultV2()' . count($results['Team_B_Arr']) . ' records found. ';
             file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
         }
         catch (Exception $e) {
