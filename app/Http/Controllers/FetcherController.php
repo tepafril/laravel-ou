@@ -580,9 +580,18 @@ class FetcherController extends Controller
                 
                     $game = Game7m::find($game_id);
                     if ($game) {
+                        $f20b = json_decode($game->f20b ?? '[]');
+                        $f20b[] = $arr[20];
+                        $data['f20b'] = json_encode($f20b);
                         $game->update($data);
                     } else {
                         $data['id'] = $game_id;
+                        $data['f20a'] = $arr[20] ?? null;
+
+                        $f20b = json_decode('[]');
+                        $f20b[] = $arr[20];
+
+                        $data['f20b'] = json_encode($f20b);
                         $game = Game7m::create($data);
                     }
                 }

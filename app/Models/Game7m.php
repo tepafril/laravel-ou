@@ -14,7 +14,7 @@ class Game7m extends Model
     use HasFactory;
     protected $fillable = [
         'id', 'gd', 'gt', 'f1', 'f4', 'f5', 'f6', 'f7', 'f8', 'taid', 'thid', 'f11', 'f12', 'f13', 'f14',
-        'f15', 'tid', 'f17', 'f18', 'f19', 'f20', 'mid', 'isrun',
+        'f15', 'tid', 'f17', 'f18', 'f19', 'f20', 'f20a','f20b', 'mid', 'isrun',
         'ah1_0',
         'ah1_1',
         'ah1_2',
