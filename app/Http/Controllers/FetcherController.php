@@ -383,45 +383,49 @@ class FetcherController extends Controller
                     });
                 }
 
-                // Game
-                if( isset($attrs['id'])  && $attrs['id'] > 0){
-                    $game = Game::where('id', $attrs['id'])->firstOr(function () use ($attrs){
-                        return Game::create([
-                            'id'    => $attrs['id'],
-                            'gd'    => Carbon::createFromFormat('Ymd H:i', $attrs['gt'])->toDateString('Y-m-d'),
-                            'gt'    => Carbon::createFromFormat('Ymd H:i', $attrs['gt'])->toDateTimeString(),
-                            
-                            'cid'   => isset($attrs['cid']) && $attrs['cid'] > 0 ? $attrs['cid'] : null,
-                            'tid'   => isset($attrs['tid']) && $attrs['tid'] > 0 ? $attrs['tid'] : null,
-                            'taid'  => isset($attrs['taid']) && $attrs['taid'] > 0 ? $attrs['taid'] : null,
-                            'thid'  => isset($attrs['thid']) && $attrs['thid'] > 0 ? $attrs['thid'] : null,
+                if (isset($attrs['id']) && $attrs['id'] > 0) {
+                    $data = [
+                        'gd'    => Carbon::createFromFormat('Ymd H:i', $attrs['gt'])->toDateString('Y-m-d'),
+                        'gt'    => Carbon::createFromFormat('Ymd H:i', $attrs['gt'])->toDateTimeString(),
+                        
+                        'cid'   => isset($attrs['cid']) && $attrs['cid'] > 0 ? $attrs['cid'] : null,
+                        'tid'   => isset($attrs['tid']) && $attrs['tid'] > 0 ? $attrs['tid'] : null,
+                        'taid'  => isset($attrs['taid']) && $attrs['taid'] > 0 ? $attrs['taid'] : null,
+                        'thid'  => isset($attrs['thid']) && $attrs['thid'] > 0 ? $attrs['thid'] : null,
 
-                            'mb'    => isset($attrs['mb']) ? $attrs['mb'] : null,
-                            'hr'    => isset($attrs['hr']) ? $attrs['hr'] : null,
-                            'ar'    => isset($attrs['ar']) ? $attrs['ar'] : null,
-                            'sg'    => isset($attrs['sg']) ? $attrs['sg'] : null,
-                            's'     => isset($attrs['s']) ? $attrs['s'] : null,
-                            'hc'    => isset($attrs['hc']) ? $attrs['hc'] : null,
-                            'ns'    => isset($attrs['ns']) ? $attrs['ns'] : null,
-                            'tdid'  => isset($attrs['tdid']) ? $attrs['tdid'] : null,
-                            'ml'    => isset($attrs['ml']) ? $attrs['ml'] : null,
-                            'bir'   => isset($attrs['bir']) ? $attrs['bir'] : null,
-                            'htb'   => isset($attrs['htb']) ? $attrs['htb'] : null,
-                            'evid'  => isset($attrs['evid']) ? $attrs['evid'] : null,
-                            'mid'   => isset($attrs['mid']) ? $attrs['mid'] : null,
-                            'himg'  => isset($attrs['himg']) ? $attrs['himg'] : null,
-                            'aimg'  => isset($attrs['aimg']) ? $attrs['aimg'] : null,
-                            'ty'    => isset($attrs['ty']) ? $attrs['ty'] : null,
-                            'cimg'  => isset($attrs['cimg']) ? $attrs['cimg'] : null,
-                            'cimg2' => isset($attrs['cimg2']) ? $attrs['cimg2'] : null,
-                            'tseq'  => isset($attrs['tseq']) ? $attrs['tseq'] : null,
-                            'dorder' => isset($attrs['dorder']) ? $attrs['dorder'] : null,
-                            'ctid'  => isset($attrs['ctid']) ? $attrs['ctid'] : null,
-                            'ls_status'         => isset($attrs['ls_status']) ? $attrs['ls_status'] : null,
-                            'display_lineup'    => isset($attrs['display_lineup']) ? $attrs['display_lineup'] : null,
-                            'ft_show' => isset($attrs['ft_show']) ? $attrs['ft_show'] : null,
-                        ]);
-                    });
+                        'mb'    => isset($attrs['mb']) ? $attrs['mb'] : null,
+                        'hr'    => isset($attrs['hr']) ? $attrs['hr'] : null,
+                        'ar'    => isset($attrs['ar']) ? $attrs['ar'] : null,
+                        'sg'    => isset($attrs['sg']) ? $attrs['sg'] : null,
+                        's'     => isset($attrs['s']) ? $attrs['s'] : null,
+                        'hc'    => isset($attrs['hc']) ? $attrs['hc'] : null,
+                        'ns'    => isset($attrs['ns']) ? $attrs['ns'] : null,
+                        'tdid'  => isset($attrs['tdid']) ? $attrs['tdid'] : null,
+                        'ml'    => isset($attrs['ml']) ? $attrs['ml'] : null,
+                        'bir'   => isset($attrs['bir']) ? $attrs['bir'] : null,
+                        'htb'   => isset($attrs['htb']) ? $attrs['htb'] : null,
+                        'evid'  => isset($attrs['evid']) ? $attrs['evid'] : null,
+                        'mid'   => isset($attrs['mid']) ? $attrs['mid'] : null,
+                        'himg'  => isset($attrs['himg']) ? $attrs['himg'] : null,
+                        'aimg'  => isset($attrs['aimg']) ? $attrs['aimg'] : null,
+                        'ty'    => isset($attrs['ty']) ? $attrs['ty'] : null,
+                        'cimg'  => isset($attrs['cimg']) ? $attrs['cimg'] : null,
+                        'cimg2' => isset($attrs['cimg2']) ? $attrs['cimg2'] : null,
+                        'tseq'  => isset($attrs['tseq']) ? $attrs['tseq'] : null,
+                        'dorder' => isset($attrs['dorder']) ? $attrs['dorder'] : null,
+                        'ctid'  => isset($attrs['ctid']) ? $attrs['ctid'] : null,
+                        'ls_status'         => isset($attrs['ls_status']) ? $attrs['ls_status'] : null,
+                        'display_lineup'    => isset($attrs['display_lineup']) ? $attrs['display_lineup'] : null,
+                        'ft_show' => isset($attrs['ft_show']) ? $attrs['ft_show'] : null,
+                    ]; 
+                    $game = Game::find($attrs['id']);
+                
+                    if ($game) {
+                        $game->update($data);
+                    } else {
+                        $data['id'] = $attrs['id']; // ensure ID is included for creation
+                        $game = Game::create($data);
+                    }
                 }
             }
 
