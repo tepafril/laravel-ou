@@ -214,6 +214,23 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div
+                                class="grid grid-cols-2 gap-4 px-4 mt-8 sm:px-8"
+                            >
+                                <div>
+                                    <Line
+                                        :data="chartData"
+                                        :options="chartOptions"
+                                    />
+                                </div>
+                                <div>
+                                    <Line
+                                        :data="chartData"
+                                        :options="chartOptions"
+                                    />
+                                </div>
+                            </div>
                         </template>
                     </div>
                 </div>
@@ -223,6 +240,28 @@
 </template>
 
 <script>
+import { Line } from "vue-chartjs";
+import {
+    Chart as ChartJS,
+    Title,
+    Tooltip,
+    Legend,
+    LineElement,
+    PointElement,
+    CategoryScale,
+    LinearScale,
+} from "chart.js";
+
+ChartJS.register(
+    Title,
+    Tooltip,
+    Legend,
+    LineElement,
+    PointElement,
+    CategoryScale,
+    LinearScale
+);
+
 import { defineComponent } from "vue";
 import Loading from "@/Components/Loading.vue";
 import { getDashboard } from "@/Services/correct_score";
@@ -236,6 +275,46 @@ export default defineComponent({
             isLoading: false,
             dashboard: {
                 total: 0,
+            },
+
+            chartData: {
+                labels: [
+                    "2025-04-29",
+                    "2025-04-30",
+                    "2025-05-01",
+                    "2025-05-02",
+                    "2025-05-03",
+                    "2025-05-04",
+                    "2025-05-05",
+                    "2025-05-06",
+                    "2025-05-07",
+                ],
+                datasets: [
+                    {
+                        label: "Under",
+                        data: [30, 12, 51, 30, 12, 51, 30, 12, 51],
+                        borderColor: "#f07274",
+                        tension: 0.4,
+                        fill: false,
+                    },
+                    {
+                        label: "Over",
+                        data: [20, 50, 30, 20, 50, 30, 20, 50, 30],
+                        borderColor: "#6ea1f9",
+                        tension: 0.4,
+                        fill: false,
+                    },
+                ],
+            },
+            chartOptions: {
+                responsive: true,
+                plugins: {
+                    legend: { position: "top" },
+                    title: {
+                        display: true,
+                        text: "Under/Over Line Chart",
+                    },
+                },
             },
         };
     },
@@ -258,6 +337,7 @@ export default defineComponent({
         this.getDashboard();
     },
     components: {
+        Line,
         Loading,
         Head,
         AuthenticatedLayout,

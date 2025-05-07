@@ -552,30 +552,35 @@ class FetcherController extends Controller
                 }
 
                 // Game
-                if( isset($game_id) ){
-                    $game = Game7m::where('id', $game_id)->firstOr(function () use ($arr, $game_id){
-                        return Game7m::create([
-                            'id'    => $game_id,
-                            'f1'   => isset($arr[1]) ? $arr[1] : null,
-                            'f4'   => isset($arr[4]) ? $arr[4] : null,
-                            'f5'   => isset($arr[5]) ? $arr[5] : null,
-                            'f6'   => isset($arr[6]) ? $arr[6] : null,
-                            'f7'   => isset($arr[7]) ? $arr[7] : null,
-                            'f8'   => isset($arr[8]) ? $arr[8] : null,
-                            'thid'   => isset($arr[9]) ? $arr[9] : null,
-                            'taid'   => isset($arr[10]) ? $arr[10] : null,
-                            'f11'   => isset($arr[11]) ? $arr[11] : null,
-                            'f12'   => isset($arr[12]) ? $arr[12] : null,
-                            'f13'   => isset($arr[13]) ? $arr[13] : null,
-                            'f14'   => isset($arr[14]) ? $arr[14] : null,
-                            'f15'   => isset($arr[15]) ? $arr[15] : null,
-                            'tid'   => isset($arr[14]) ? $arr[16] : null,
-                            'f17'   => isset($arr[17]) ? $arr[17] : null,
-                            'f18'   => isset($arr[18]) ? $arr[18] : null,
-                            'f19'   => isset($arr[19]) ? $arr[19] : null,
-                            'f20'   => isset($arr[20]) ? $arr[20] : null,
-                        ]);
-                    });
+                if (isset($game_id)) {
+                    $data = [
+                        'f1'    => $arr[1] ?? null,
+                        'f4'    => $arr[4] ?? null,
+                        'f5'    => $arr[5] ?? null,
+                        'f6'    => $arr[6] ?? null,
+                        'f7'    => $arr[7] ?? null,
+                        'f8'    => $arr[8] ?? null,
+                        'thid'  => $arr[9] ?? null,
+                        'taid'  => $arr[10] ?? null,
+                        'f11'   => $arr[11] ?? null,
+                        'f12'   => $arr[12] ?? null,
+                        'f13'   => $arr[13] ?? null,
+                        'f14'   => $arr[14] ?? null,
+                        'f15'   => $arr[15] ?? null,
+                        'tid'   => $arr[16] ?? null,
+                        'f17'   => $arr[17] ?? null,
+                        'f18'   => $arr[18] ?? null,
+                        'f19'   => $arr[19] ?? null,
+                        'f20'   => $arr[20] ?? null,
+                    ];
+                
+                    $game = Game7m::find($game_id);
+                    if ($game) {
+                        $game->update($data);
+                    } else {
+                        $data['id'] = $game_id;
+                        $game = Game7m::create($data);
+                    }
                 }
             }
 
