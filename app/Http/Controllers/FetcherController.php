@@ -684,8 +684,57 @@ class FetcherController extends Controller
                 ->get();
 
             foreach ($games as $game) {
-                echo $game->game7m->id;
-                Igame::updateOrCreate(
+                $wn = null;
+                $ov = null;
+
+                if($game->li_decimal){
+                    if($game->game7m->ft_home_score + $game->game7m->ft_away_score == $game->li_decimal){
+                        $ov = 'draw';
+                    }
+                    else if($game->game7m->ft_home_score + $game->game7m->ft_away_score > $game->li_decimal){
+                        $ov = 'over';
+                    }
+                    else{
+                        $ov = 'under';
+                    }
+                }
+
+                if($game->f20a){
+                    if($home_score - $game->f20a == $away_score){
+                        $wn = 'draw';
+                    }
+                    else if( ($home_score - $game->f20a) - $away_score == -0.25){
+                        $wn = 'loss_half';
+                    }
+                    else if( ($home_score - $game->f20a) - $away_score <= -0.50){
+                        $wn = 'loss';
+                    }
+                    else if( ($home_score - $game->f20a) - $away_score == 0.25){
+                        $wn = 'win_half';
+                    }
+                    else if( ($home_score - $game->f20a) - $away_score > 0.25){
+                        $wn = 'win';
+                    }
+                }
+                // else{
+                //     if($away_score - $game->f20a == $home_score){
+                //         $wn = 'draw';
+                //     }
+                //     else if( ($away_score - $game->f20a) - $home_score == -0.25){
+                //         $wn = 'loss_half';
+                //     }
+                //     else if( ($away_score - $game->f20a) - $home_score <= -0.50){
+                //         $wn = 'loss';
+                //     }
+                //     else if( ($away_score - $game->f20a) - $home_score == 0.25){
+                //         $wn = 'win_half';
+                //     }
+                //     else if( ($away_score - $game->f20a) - $home_score > 0.25){
+                //         $wn = 'win';
+                //     }
+                // }
+
+                $igame = Igame::firstOrCreate(
                     ['id' => $game->game7m->id],
                     [
                         'gt' => $game->gt,
@@ -700,7 +749,9 @@ class FetcherController extends Controller
                         'an' => $game->away_team->english,
                         'oo' => $game->oo,
                         'uo' => $game->uo,
-                        'li' => $game->li_decimal
+                        'li' => $game->li_decimal,
+                        'wn' => $wn,
+                        'ov' => $ov
                     ]
                 );
             }
