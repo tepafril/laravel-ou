@@ -703,19 +703,19 @@ class FetcherController extends Controller
                 }
 
                 if($game->f20a){
-                    if($home_score - $game->f20a == $away_score){
+                    if($game->game7m->ft_home_score - $game->f20a == $game->game7m->ft_away_score){
                         $wn = 'draw';
                     }
-                    else if( ($home_score - $game->f20a) - $away_score == -0.25){
+                    else if( ($game->game7m->ft_home_score - $game->f20a) - $game->game7m->ft_away_score == -0.25){
                         $wn = 'loss_half';
                     }
-                    else if( ($home_score - $game->f20a) - $away_score <= -0.50){
+                    else if( ($game->game7m->ft_home_score - $game->f20a) - $game->game7m->ft_away_score <= -0.50){
                         $wn = 'loss';
                     }
-                    else if( ($home_score - $game->f20a) - $away_score == 0.25){
+                    else if( ($game->game7m->ft_home_score - $game->f20a) - $game->game7m->ft_away_score == 0.25){
                         $wn = 'win_half';
                     }
-                    else if( ($home_score - $game->f20a) - $away_score > 0.25){
+                    else if( ($game->game7m->ft_home_score - $game->f20a) - $game->game7m->ft_away_score > 0.25){
                         $wn = 'win';
                     }
                     echo ", wn: $wn <br/>";
