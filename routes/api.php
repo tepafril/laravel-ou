@@ -32,28 +32,22 @@ Route::get('fetchGame', [FetcherController::class, 'fetchGame']);
 Route::get('fetchOU', [FetcherController::class, 'fetchOU']);
 Route::get('fetch7M', [FetcherController::class, 'fetch7M']);
 Route::get('fetch7mLive', [FetcherController::class, 'fetch7mLive']);
-
-
+Route::get('indexGames', [FetcherController::class, 'indexGames']);
 
 Route::put('confirmMatch/{game_id}/{game7m_id}', [CompareController::class, 'confirmMatch']);
 
 Route::get('similar', [CompareController::class, 'matchSimilarTeams']);
 Route::get('similar/{start_date}', [CompareController::class, 'matchSimilarTeams']);
 
-
-
 Route::get('/games',                                         [ViewController::class, 'fetch7mGames']);
 Route::get('/games/{start_date}/{end_date}',                 [ViewController::class, 'fetch7mGames']);
-
 
 Route::get('/correctscore-match',                                           [ViewController::class, 'getCorrectscoreMatch']);
 Route::get('/correctscore-match/{start_date}/{end_date}',                   [ViewController::class, 'getCorrectscoreMatch']);
 Route::get('/correctscore-match/{start_date}/{end_date}/{exclude7m}',       [ViewController::class, 'getCorrectscoreMatch']);
 
-
 Route::get('/unmatched',                                           [ViewController::class, 'getUnmatched']);
 Route::get('/unmatched/{start_date}/{end_date}',                   [ViewController::class, 'getUnmatched']);
-
 
 Route::get('/dashboard',                                           [DashboardController::class, 'dashboard']);
 Route::get('/dashboard/{start_date}/{end_date}',                   [DashboardController::class, 'dashboard']);

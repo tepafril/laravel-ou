@@ -11,6 +11,7 @@ use App\Models\League;
 use App\Models\League7m;
 use App\Models\Game;
 use App\Models\Game7m;
+use App\Models\Igame;
 
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -186,6 +187,7 @@ class FetcherController extends Controller
         $this->fetchOU($request);
         $this->fetch7M($request);
         $this->fetch7mLive($request);
+        $this->indexGames();
     }
 
     public function fetchResultV2($game_date = null)
@@ -668,6 +670,47 @@ class FetcherController extends Controller
         catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
             file_get_contents('https://api.telegram.org/bot6644142525:AAE6JbyeeaYCZ7U7N1NvD8sooleCrvWnpks/sendMessage?chat_id=-4083928800/&text=' . 'asianHandicapLive: ' . $e->getMessage());
+        }
+    }
+
+    public function indexGames()
+    {
+        try {
+            $games = Game::with(['away_team', 'home_team', 'league', 'game7m', 'game7m.home_team', 'game7m.away_team', 'game7m.league'])
+                ->whereNotNull('game7m_id')
+                // ->whereHas('game7m', function($query) {
+                //     $query->where('status', 4);
+                // })
+                ->get();
+
+            foreach ($games as $game) {
+                echo $game->game7m->id;
+                Igame::updateOrCreate(
+                    ['id' => $game->game7m->id],
+                    [
+                        'gt' => $game->gt,
+                        'f20' => $game->game7m->f20,
+                        'f20a' => $game->game7m->f20a,
+                        'f20b' => $game->game7m->f20b,
+                        'st' => $game->game7m->status,
+                        'fths' => $game->game7m->ft_home_score,
+                        'ftas' => $game->game7m->ft_away_score,
+                        'ln' => $game->league->english,
+                        'hn' => $game->home_team->english,
+                        'an' => $game->away_team->english,
+                        'oo' => $game->oo,
+                        'uo' => $game->uo,
+                        'li' => $game->li_decimal
+                    ]
+                );
+            }
+
+            $text = 'Ok! [6] indexGames(): ' . count($games) . ' records indexed. ';
+            file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
+            echo $text;
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+            file_get_contents('https://api.telegram.org/bot6644142525:AAE6JbyeeaYCZ7U7N1NvD8sooleCrvWnpks/sendMessage?chat_id=-4083928800/&text=' . 'indexGames: ' . $e->getMessage());
         }
     }
 }
