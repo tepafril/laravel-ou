@@ -750,8 +750,8 @@ class FetcherController extends Controller
                         'oo' => $game->oo,
                         'uo' => $game->uo,
                         'li' => $game->li_decimal,
-                        'wn' => $wn,
-                        'ov' => $ov
+                        'is_wn' => $wn,
+                        'is_ov' => $ov
                     ]
                 );
             }
