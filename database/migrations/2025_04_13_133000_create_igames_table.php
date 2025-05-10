@@ -16,7 +16,7 @@ return new class extends Migration
             $table->dateTime('gt')->nullable(); // Game Time
             $table->string('f20')->nullable(); // Original f20 field
             $table->string('f20a')->nullable(); // Additional f20 field
-            $table->string('f20b')->nullable(); // Additional f20 field
+            $table->json('f20b')->nullable(); // Additional f20 field
             $table->integer('st')->nullable(); // status
             $table->integer('fths')->nullable(); // ft_home_score
             $table->integer('ftas')->nullable(); // ft_away_score
