@@ -25,7 +25,9 @@ class Igame extends Model
         'an',
         'oo',
         'uo',
-        'li'
+        'li',
+        'is_wn',
+        'is_ov'
     ];
 
     public $timestamps = true;
