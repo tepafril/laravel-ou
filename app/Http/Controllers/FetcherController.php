@@ -687,6 +687,8 @@ class FetcherController extends Controller
                 $wn = null;
                 $ov = null;
 
+                echo "wn: $wn, ov: $ov <br/>";
+
                 if($game->li_decimal){
                     if($game->game7m->ft_home_score + $game->game7m->ft_away_score == $game->li_decimal){
                         $ov = 'draw';
