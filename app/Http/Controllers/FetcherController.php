@@ -687,8 +687,6 @@ class FetcherController extends Controller
                 $wn = null;
                 $ov = null;
 
-                // echo "wn: $wn, ov: $ov <br/>";
-
                 if($game->li_decimal){
                     if($game->game7m->ft_home_score + $game->game7m->ft_away_score == $game->li_decimal){
                         $ov = 'draw';
@@ -701,24 +699,24 @@ class FetcherController extends Controller
                     }
                 }
 
-                if($game->f20a){
-                    if($game->game7m->ft_home_score + $game->f20a == $game->game7m->ft_away_score){
+                if($game->game7m->f20a){
+                    if($game->game7m->ft_home_score + $game->game7m->f20a == $game->game7m->ft_away_score){
                         echo 'draw';
                         $wn = 'draw';
                     }
-                    else if( ($game->game7m->ft_home_score + $game->f20a) - $game->game7m->ft_away_score == -0.25){
+                    else if( ($game->game7m->ft_home_score + $game->game7m->f20a) - $game->game7m->ft_away_score == -0.25){
                         echo 'loss_half';
                         $wn = 'loss_half';
                     }
-                    else if( ($game->game7m->ft_home_score + $game->f20a) - $game->game7m->ft_away_score <= -0.50){
+                    else if( ($game->game7m->ft_home_score + $game->game7m->f20a) - $game->game7m->ft_away_score <= -0.50){
                         echo 'loss';
                         $wn = 'loss';
                     }
-                    else if( ($game->game7m->ft_home_score + $game->f20a) - $game->game7m->ft_away_score == 0.25){
+                    else if( ($game->game7m->ft_home_score + $game->game7m->f20a) - $game->game7m->ft_away_score == 0.25){
                         echo 'win_half';
                         $wn = 'win_half';
                     }
-                    else if( ($game->game7m->ft_home_score + $game->f20a) - $game->game7m->ft_away_score > 0.25){
+                    else if( ($game->game7m->ft_home_score + $game->game7m->f20a) - $game->game7m->ft_away_score > 0.25){
                         echo 'win';
                         $wn = 'win';
                     }
