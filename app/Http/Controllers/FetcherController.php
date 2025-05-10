@@ -678,16 +678,16 @@ class FetcherController extends Controller
         try {
             $games = Game::with(['away_team', 'home_team', 'league', 'game7m', 'game7m.home_team', 'game7m.away_team', 'game7m.league'])
                 ->whereNotNull('game7m_id')
-                ->whereHas('game7m', function($query) {
-                    $query->where('status', 4);
-                })
+                // ->whereHas('game7m', function($query) {
+                //     $query->where('status', 4);
+                // })
                 ->get();
 
             foreach ($games as $game) {
                 $wn = null;
                 $ov = null;
 
-                echo "wn: $wn, ov: $ov <br/>";
+                // echo "wn: $wn, ov: $ov <br/>";
 
                 if($game->li_decimal){
                     if($game->game7m->ft_home_score + $game->game7m->ft_away_score == $game->li_decimal){
@@ -699,6 +699,7 @@ class FetcherController extends Controller
                     else{
                         $ov = 'under';
                     }
+                    echo "ov: $ov";
                 }
 
                 if($game->f20a){
@@ -717,6 +718,7 @@ class FetcherController extends Controller
                     else if( ($home_score - $game->f20a) - $away_score > 0.25){
                         $wn = 'win';
                     }
+                    echo ", wn: $wn <br/>";
                 }
                 // else{
                 //     if($away_score - $game->f20a == $home_score){
