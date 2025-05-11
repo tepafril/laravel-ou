@@ -218,17 +218,31 @@
                             <div
                                 class="px-4 mt-8 sm:px-8"
                             >
-                                <div>
-                                    <Line
-                                        :data="winLossChartData"
-                                        :options="chartOptions"
-                                    />
-                                </div>
-                                <div>
-                                    <Line
-                                        :data="overUnderChartData"
-                                        :options="overUnderChartOptions"
-                                    />
+                                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                    <div>
+                                        <Line
+                                            :data="winLossChartData"
+                                            :options="chartOptions"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Line
+                                            :data="overUnderChartData"
+                                            :options="overUnderChartOptions"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Line
+                                            :data="winRateChartData"
+                                            :options="winRateChartOptions"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Pie
+                                            :data="overUnderPieData"
+                                            :options="overUnderPieOptions"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </template>
@@ -240,7 +254,7 @@
 </template>
 
 <script>
-import { Line } from "vue-chartjs";
+import { Line, Pie } from "vue-chartjs";
 import {
     Chart as ChartJS,
     Title,
@@ -250,6 +264,7 @@ import {
     PointElement,
     CategoryScale,
     LinearScale,
+    ArcElement,
 } from "chart.js";
 
 ChartJS.register(
@@ -259,7 +274,8 @@ ChartJS.register(
     LineElement,
     PointElement,
     CategoryScale,
-    LinearScale
+    LinearScale,
+    ArcElement
 );
 
 import { defineComponent } from "vue";
@@ -355,6 +371,63 @@ export default defineComponent({
                     },
                 },
             },
+            winRateChartData: {
+                labels: [],
+                datasets: [
+                    {
+                        label: "Win Rate %",
+                        data: [],
+                        borderColor: "#4CAF50",
+                        tension: 0.4,
+                        fill: false,
+                    }
+                ],
+            },
+            overUnderPieData: {
+                labels: ['Over', 'Under', 'Draw'],
+                datasets: [
+                    {
+                        data: [0, 0, 0],
+                        backgroundColor: ['#2196F3', '#9C27B0', '#FFC107'],
+                    }
+                ],
+            },
+            winRateChartOptions: {
+                responsive: true,
+                plugins: {
+                    legend: { position: "top" },
+                    title: {
+                        display: true,
+                        text: "Win Rate Trend",
+                        font: {
+                            size: 24
+                        }
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Win Rate (%)'
+                        }
+                    }
+                }
+            },
+            overUnderPieOptions: {
+                responsive: true,
+                plugins: {
+                    legend: { position: "top" },
+                    title: {
+                        display: true,
+                        text: "Over/Under Distribution",
+                        font: {
+                            size: 24
+                        }
+                    },
+                },
+            },
         };
     },
     methods: {
@@ -383,6 +456,20 @@ export default defineComponent({
                     this.overUnderChartData.datasets[0].data = this.dashboard.ou_chart.map(item => item.over_count);
                     this.overUnderChartData.datasets[1].data = this.dashboard.ou_chart.map(item => item.under_count);
                     this.overUnderChartData.datasets[2].data = this.dashboard.ou_chart.map(item => item.ov_draw_count);
+
+                    // Win Rate Trend Chart
+                    this.winRateChartData.labels = labels;
+                    this.winRateChartData.datasets[0].data = this.dashboard.ou_chart.map(item => {
+                        const total = item.win_count + item.loss_count + item.wn_draw_count;
+                        return total > 0 ? ((item.win_count / total) * 100).toFixed(1) : 0;
+                    });
+
+                    // Over/Under Distribution Pie Chart
+                    const totalOver = this.dashboard.ou_chart.reduce((sum, item) => sum + item.over_count, 0);
+                    const totalUnder = this.dashboard.ou_chart.reduce((sum, item) => sum + item.under_count, 0);
+                    const totalDraw = this.dashboard.ou_chart.reduce((sum, item) => sum + item.ov_draw_count, 0);
+                    
+                    this.overUnderPieData.datasets[0].data = [totalOver, totalUnder, totalDraw];
                 }
             } catch (e) {
             } finally {
@@ -395,6 +482,7 @@ export default defineComponent({
     },
     components: {
         Line,
+        Pie,
         Loading,
         Head,
         AuthenticatedLayout,

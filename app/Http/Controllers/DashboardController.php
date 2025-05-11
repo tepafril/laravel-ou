@@ -14,6 +14,7 @@ class DashboardController extends Controller
         
         $date = date('Y-m-d');
 
+        // Get total counts and today's stats
         $result = DB::select("
             SELECT
                 COUNT(*) as total,
@@ -28,24 +29,20 @@ class DashboardController extends Controller
 
         $data["count"] = (array) $result[0];
 
-
-        // $total = DB::select("SELECT COUNT(*) as total FROM games WHERE gd <= '$date'");
-        // $matched = DB::select("SELECT COUNT(*) as matched FROM games WHERE gd <= '$date' AND game7m_id IS NOT NULL");
-        // $unmatched = DB::select("SELECT COUNT(*) as unmatched FROM games WHERE gd <= '$date' AND game7m_id IS NULL");
-
-
-        // $today_total = DB::select("SELECT COUNT(*) as today_total FROM games WHERE gd = '$date'");
-        // $today_matched = DB::select("SELECT COUNT(*) as today_matched FROM games WHERE gd = '$date' AND game7m_id IS NOT NULL");
-        // $today_unmatched = DB::select("SELECT COUNT(*) as today_unmatched FROM games WHERE gd = '$date' AND game7m_id IS NULL");
-        
+        // Get daily stats for charts
         $results = DB::table('igames')
-            ->select(DB::raw('DATE(gt) as d'), 
-                     DB::raw('COUNT(CASE WHEN is_wn = "win" OR is_wn = "win_half" THEN 1 END) as win_count'),
-                     DB::raw('COUNT(CASE WHEN is_wn = "loss" OR is_wn = "loss_half" THEN 1 END) as loss_count'),
-                     DB::raw('COUNT(CASE WHEN is_wn = "draw" THEN 1 END) as wn_draw_count'),
-                     DB::raw('COUNT(CASE WHEN is_ov = "over" THEN 1 END) as over_count'),
-                     DB::raw('COUNT(CASE WHEN is_ov = "under" THEN 1 END) as under_count'),
-                     DB::raw('COUNT(CASE WHEN is_ov = "draw" THEN 1 END) as ov_draw_count')
+            ->select(
+                DB::raw('DATE(gt) as d'),
+                // Win/Loss/Draw counts
+                DB::raw('COUNT(CASE WHEN is_wn = "win" OR is_wn = "win_half" THEN 1 END) as win_count'),
+                DB::raw('COUNT(CASE WHEN is_wn = "loss" OR is_wn = "loss_half" THEN 1 END) as loss_count'),
+                DB::raw('COUNT(CASE WHEN is_wn = "draw" THEN 1 END) as wn_draw_count'),
+                // Over/Under/Draw counts
+                DB::raw('COUNT(CASE WHEN is_ov = "over" THEN 1 END) as over_count'),
+                DB::raw('COUNT(CASE WHEN is_ov = "under" THEN 1 END) as under_count'),
+                DB::raw('COUNT(CASE WHEN is_ov = "draw" THEN 1 END) as ov_draw_count'),
+                // Total games per day for win rate calculation
+                DB::raw('COUNT(*) as total_games')
             )
             ->where('gt', '>=', Carbon::now()->subDays(30)->startOfDay())
             ->where('gt', '<=', Carbon::now()->addDay()->endOfDay())
@@ -53,7 +50,19 @@ class DashboardController extends Controller
             ->orderBy('d', 'asc')
             ->get();
 
+        // Get total Over/Under/Draw counts for pie chart
+        $overUnderTotals = DB::table('igames')
+            ->select(
+                DB::raw('COUNT(CASE WHEN is_ov = "over" THEN 1 END) as total_over'),
+                DB::raw('COUNT(CASE WHEN is_ov = "under" THEN 1 END) as total_under'),
+                DB::raw('COUNT(CASE WHEN is_ov = "draw" THEN 1 END) as total_draw')
+            )
+            ->where('gt', '>=', Carbon::now()->subDays(30)->startOfDay())
+            ->where('gt', '<=', Carbon::now()->addDay()->endOfDay())
+            ->first();
+
         $data["ou_chart"] = $results;
+        $data["over_under_totals"] = $overUnderTotals;
         
         return response()->json($data, 200);
     }
