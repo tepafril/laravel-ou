@@ -216,7 +216,7 @@
                             </div>
 
                             <div
-                                class="grid grid-cols-2 gap-4 px-4 mt-8 sm:px-8"
+                                class="px-4 mt-8 sm:px-8"
                             >
                                 <div>
                                     <Line
