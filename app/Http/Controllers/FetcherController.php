@@ -519,6 +519,7 @@ class FetcherController extends Controller
                 $f20b = array_values(array_filter($f20b));
                 $game->f20b = json_encode($f20b);
                 $game->f20a = $f20b[0] ?? null;
+                $game->f20 = is_array($f20b) ? (end($f20b) ?? null) : null;
                 $game->save();
             }
         }
@@ -606,7 +607,6 @@ class FetcherController extends Controller
                         $f20b = array_values(array_filter($f20b));
                         $data['f20b'] = json_encode($f20b);
                         $data['f20a'] = $f20b[0] ?? null;
-                        $game->update($data);
                     } else {
                         $data['id'] = $game_id;
                         $data['f20a'] = $arr[20] ?? null;
@@ -623,31 +623,7 @@ class FetcherController extends Controller
 
             $text = 'Ok! [3] fetch7M(): ' . count($matches) . ' records found. ';
             file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
-            // array(21) { 
-            //     [0]=> string(6) "SPA D1" 
-            //     [1]=> string(6) "993300" 
-            //     [2]=> string(8) "Mallorca" 
-            //     [3]=> string(6) "Getafe" 
-            //     [4]=> string(10) "HK NOW 632" 
-            //     [5]=> string(0) "" 
-            //     [6]=> string(3) " / " 
-            //     [7]=> string(2) "17" 
-            //     [8]=> string(2) "11" 
-            //     [9]=> int(247) Mallorca ID
-            //     [10]=> int(333) Getafe ID
-            //     [11]=> int(0) 
-            //     [12]=> string(2) "85" League ID
-            //     [13]=> int(1)  
-            //     [14]=> int(6445987)  Odd ID
-            //     [15]=> int(1) 
-            //     [16]=> int(85) 
-            //     [17]=> int(1) League ID
-            //     [18]=> string(24) "-0.5,2.2,1.66,0,1.56,2.3" 
-            //     [19]=> string(7) "-0.2500" 
-            //     [20]=> string(5) "-0.25" 
-            // } 
-
-            // print_r($result);
+            
 
             echo $text;
         }
