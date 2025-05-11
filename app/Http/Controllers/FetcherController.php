@@ -505,6 +505,26 @@ class FetcherController extends Controller
         }
     }
 
+    public function adjustHandicap($game_date = null)
+    {
+        set_time_limit(480);
+        if($game_date == null){
+            $game_date = date('Y-m-d', strtotime('-1 day'));
+        }
+
+        $game7ms = Game7m::where('gd', $game_date)->get();
+        foreach ($game7ms as $game) {
+            if ($game) {
+                $f20b = json_decode($game->f20b ?? '[]');
+                $f20b[] = $arr[20];
+                $f20b = array_values(array_filter($f20b));
+                $data['f20b'] = json_encode($f20b);
+                $data['f20a'] = $f20b[0] ?? null;
+                $game->update($data);
+            }
+        }
+    }
+
     public function fetch7M(Request $request)
     {
         set_time_limit(480);
@@ -584,7 +604,9 @@ class FetcherController extends Controller
                     if ($game) {
                         $f20b = json_decode($game->f20b ?? '[]');
                         $f20b[] = $arr[20];
+                        $f20b = array_values(array_filter($f20b));
                         $data['f20b'] = json_encode($f20b);
+                        $data['f20a'] = $f20b[0] ?? null;
                         $game->update($data);
                     } else {
                         $data['id'] = $game_id;
@@ -592,6 +614,7 @@ class FetcherController extends Controller
 
                         $f20b = json_decode('[]');
                         $f20b[] = $arr[20];
+                        $f20b = array_values(array_filter($f20b));
 
                         $data['f20b'] = json_encode($f20b);
                         $game = Game7m::create($data);

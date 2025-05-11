@@ -28,6 +28,9 @@ Route::get('fetchResult/{game_date}', [FetcherController::class, 'fetchResult'])
 Route::get('fetchResultV2', [FetcherController::class, 'fetchResultV2']);
 Route::get('fetchResultV2/{game_date}', [FetcherController::class, 'fetchResultV2']);
 
+Route::get('adjustHandicap', [FetcherController::class, 'adjustHandicap']);
+Route::get('adjustHandicap/{game_date}', [FetcherController::class, 'adjustHandicap']);
+
 Route::get('fetchGame', [FetcherController::class, 'fetchGame']);
 Route::get('fetchOU', [FetcherController::class, 'fetchOU']);
 Route::get('fetch7M', [FetcherController::class, 'fetch7M']);
