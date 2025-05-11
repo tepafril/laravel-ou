@@ -743,7 +743,7 @@ class FetcherController extends Controller
                 );
             }
 
-            $text = 'Ok! [6] indexGames(): ' . count($games) . ' records indexed. ';
+            $text = 'Ok! [8] indexGames(): ' . count($games) . ' records indexed. ';
             file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
             echo $text;
         } catch (Exception $e) {
