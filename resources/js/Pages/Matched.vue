@@ -164,7 +164,7 @@ import { Head } from "@inertiajs/vue3";
                                             <div
                                                 class="cs-box-league text-black font-bold h-[29px] px-2 flex flex-row items-center"
                                             >
-                                                <div class="w-3/12"></div>
+                                                <div class="w-2/12"></div>
                                                 <div
                                                     class="w-3/12 flex h-[22px]"
                                                 >
@@ -196,7 +196,7 @@ import { Head } from "@inertiajs/vue3";
                                                         >
                                                     </div>
                                                 </div>
-                                                <div class="w-3/12"></div>
+                                                <div class="w-4/12"></div>
                                             </div>
                                             <div
                                                 v-for="(match, im) in timeMatch.matches"
