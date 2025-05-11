@@ -671,15 +671,18 @@ class FetcherController extends Controller
         }
     }
 
-    public function indexGames()
+    public function indexGames($page = 1)
     {
         try {
+            $count = 0;
+            $perPage = 100;
+        
             $games = Game::with(['away_team', 'home_team', 'league', 'game7m', 'game7m.home_team', 'game7m.away_team', 'game7m.league'])
                 ->whereNotNull('game7m_id')
                 ->whereHas('game7m', function($query) {
                     $query->where('status', 4);
                 })
-                ->get();
+                ->paginate($perPage, ['*'], 'page', $page);
 
             foreach ($games as $game) {
                 $wn = null;
@@ -699,27 +702,25 @@ class FetcherController extends Controller
 
                 if($game->game7m->f20a){
                     if($game->game7m->ft_home_score + $game->game7m->f20a == $game->game7m->ft_away_score){
-                        echo 'draw';
                         $wn = 'draw';
                     }
                     else if( ($game->game7m->ft_home_score + $game->game7m->f20a) - $game->game7m->ft_away_score == -0.25){
-                        echo 'loss_half';
                         $wn = 'loss_half';
                     }
                     else if( ($game->game7m->ft_home_score + $game->game7m->f20a) - $game->game7m->ft_away_score <= -0.50){
-                        echo 'loss';
                         $wn = 'loss';
                     }
                     else if( ($game->game7m->ft_home_score + $game->game7m->f20a) - $game->game7m->ft_away_score == 0.25){
-                        echo 'win_half';
                         $wn = 'win_half';
                     }
                     else if( ($game->game7m->ft_home_score + $game->game7m->f20a) - $game->game7m->ft_away_score > 0.25){
-                        echo 'win';
                         $wn = 'win';
                     }
-                    // echo ", wn: $wn <br/>";
                 }
+
+                $game->is_wn = $wn;
+                $game->is_ov = $ov;
+                $game->save();
 
                 $igame = Igame::firstOrCreate(
                     ['id' => $game->game7m->id],
@@ -741,9 +742,11 @@ class FetcherController extends Controller
                         'is_ov' => $ov
                     ]
                 );
+                $count++;
             }
+                
 
-            $text = 'Ok! [8] indexGames(): ' . count($games) . ' records indexed. ';
+            $text = 'Ok! [8] indexGames(): ' . $count . ' records indexed. ';
             file_get_contents('https://api.telegram.org/bot6362404234:AAHMyXJBYa4mAGwNEx_3b334wKX1k-DfHOc/sendMessage?chat_id=-1002010818149/&text=' . $text);
             echo $text;
         } catch (Exception $e) {

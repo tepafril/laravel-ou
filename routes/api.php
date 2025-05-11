@@ -35,7 +35,7 @@ Route::get('fetchGame', [FetcherController::class, 'fetchGame']);
 Route::get('fetchOU', [FetcherController::class, 'fetchOU']);
 Route::get('fetch7M', [FetcherController::class, 'fetch7M']);
 Route::get('fetch7mLive', [FetcherController::class, 'fetch7mLive']);
-Route::get('indexGames', [FetcherController::class, 'indexGames']);
+Route::get('indexGames/{page}', [FetcherController::class, 'indexGames']);
 
 Route::put('confirmMatch/{game_id}/{game7m_id}', [CompareController::class, 'confirmMatch']);
 
