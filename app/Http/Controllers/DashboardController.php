@@ -38,7 +38,7 @@ class DashboardController extends Controller
         // $today_matched = DB::select("SELECT COUNT(*) as today_matched FROM games WHERE gd = '$date' AND game7m_id IS NOT NULL");
         // $today_unmatched = DB::select("SELECT COUNT(*) as today_unmatched FROM games WHERE gd = '$date' AND game7m_id IS NULL");
         
-        $results = DB::table('games')
+        $results = DB::table('igames')
             ->select(DB::raw('DATE(gt) as d'), 
                      DB::raw('COUNT(CASE WHEN is_wn = "win" OR is_wn = "win_half" THEN 1 END) as win_count'),
                      DB::raw('COUNT(CASE WHEN is_wn = "loss" OR is_wn = "loss_half" THEN 1 END) as loss_count'),
