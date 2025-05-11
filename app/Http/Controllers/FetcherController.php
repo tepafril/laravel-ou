@@ -516,11 +516,10 @@ class FetcherController extends Controller
         foreach ($game7ms as $game) {
             if ($game) {
                 $f20b = json_decode($game->f20b ?? '[]');
-                $f20b[] = $arr[20];
                 $f20b = array_values(array_filter($f20b));
-                $data['f20b'] = json_encode($f20b);
-                $data['f20a'] = $f20b[0] ?? null;
-                $game->update($data);
+                $game->f20b = json_encode($f20b);
+                $game->f20a = $f20b[0] ?? null;
+                $game->save();
             }
         }
     }
