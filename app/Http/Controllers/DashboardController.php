@@ -26,7 +26,7 @@ class DashboardController extends Controller
             WHERE gd <= ?
         ", [$date, $date, $date, $date]);
 
-        $data = (array) $result[0];
+        $data["count"] = (array) $result[0];
 
 
         // $total = DB::select("SELECT COUNT(*) as total FROM games WHERE gd <= '$date'");
@@ -38,14 +38,14 @@ class DashboardController extends Controller
         // $today_matched = DB::select("SELECT COUNT(*) as today_matched FROM games WHERE gd = '$date' AND game7m_id IS NOT NULL");
         // $today_unmatched = DB::select("SELECT COUNT(*) as today_unmatched FROM games WHERE gd = '$date' AND game7m_id IS NULL");
         
-        // $results = DB::table('games')
-        //     ->select(DB::raw('DATE(gt) as d'), DB::raw('COUNT(*) as t'))
-        //     ->where('gt', '>=', Carbon::now()->subDays(30))
-        //     ->groupBy(DB::raw('DATE(gt)'))
-        //     ->orderBy('d', 'asc')
-        //     ->get();
+        $results = DB::table('games')
+            ->select(DB::raw('DATE(gt) as d'), DB::raw('COUNT(*) as t'))
+            ->where('gt', '>=', Carbon::now()->subDays(30))
+            ->groupBy(DB::raw('DATE(gt)'))
+            ->orderBy('d', 'asc')
+            ->get();
 
-        // $data["ou_chart"] = $results;
+        $data["ou_chart"] = $results;
         
         return response()->json($data, 200);
     }

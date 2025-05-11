@@ -49,7 +49,7 @@
                                             Total Games
                                         </h3>
                                         <p class="text-3xl">
-                                            {{ formatNumber(dashboard?.total) }}
+                                            {{ formatNumber(dashboard?.count?.total) }}
                                         </p>
                                     </div>
                                 </div>
@@ -77,7 +77,7 @@
                                         </h3>
                                         <p class="text-3xl">
                                             {{
-                                                formatNumber(dashboard?.matched)
+                                                formatNumber(dashboard?.count?.matched)
                                             }}
                                         </p>
                                     </div>
@@ -107,7 +107,7 @@
                                         <p class="text-3xl">
                                             {{
                                                 formatNumber(
-                                                    dashboard?.unmatched
+                                                    dashboard?.count?.unmatched
                                                 )
                                             }}
                                         </p>
@@ -145,7 +145,7 @@
                                         <p class="text-3xl">
                                             {{
                                                 formatNumber(
-                                                    dashboard?.todayTotal
+                                                    dashboard?.count?.todayTotal
                                                 )
                                             }}
                                         </p>
@@ -176,7 +176,7 @@
                                         <p class="text-3xl">
                                             {{
                                                 formatNumber(
-                                                    dashboard?.todayMatched
+                                                    dashboard?.count?.todayMatched
                                                 )
                                             }}
                                         </p>
@@ -207,7 +207,7 @@
                                         <p class="text-3xl">
                                             {{
                                                 formatNumber(
-                                                    dashboard?.todayUnmatched
+                                                    dashboard?.count?.todayUnmatched
                                                 )
                                             }}
                                         </p>
