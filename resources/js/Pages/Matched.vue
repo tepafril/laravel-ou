@@ -88,7 +88,7 @@ import { Head } from "@inertiajs/vue3";
                                     id="sticky-title"
                                     class="font-bold text-white flex items-center justify-center bg-[#3e6fa7] border-[#679898] border-t"
                                 >
-                                    <div class="w-2/12 text-center">
+                                    <div class="w-1/12 text-center">
                                         Time/Score
                                     </div>
 
@@ -121,7 +121,7 @@ import { Head } from "@inertiajs/vue3";
                                         </div>
                                     </div>
                                     <div
-                                        class="w-1/12 border-[#679898] border-l"
+                                        class="w-2/12 border-[#679898] border-l"
                                     >
                                         <div class="text-center">&nbsp;</div>
                                         <div class="text-center">
@@ -199,7 +199,7 @@ import { Head } from "@inertiajs/vue3";
                                                 <div class="w-3/12"></div>
                                             </div>
                                             <div
-                                                v-for="match in timeMatch.matches"
+                                                v-for="(match, im) in timeMatch.matches"
                                                 :key="match.id"
                                             >
                                                 <table
@@ -209,11 +209,12 @@ import { Head } from "@inertiajs/vue3";
                                                 >
                                                     <tbody>
                                                         <tr
-                                                            id="r403976"
-                                                            class="bg-[#f0f3f6] text-black text-center cursor-pointer hover:bg-purple-500 hover:bg-opacity-30"
+                                                            :class="im % 2 == 0 ? 'bg-[#f0f3f6]' : 'bg-[#fff]'"
+                                                            class="text-black text-center cursor-pointer hover:bg-purple-500 hover:bg-opacity-30"
                                                         >
                                                             <td
-                                                                class="w-2/12 bg-[#f0f3f6]"
+                                                                :class="im % 2 == 0 ? 'bg-[#f0f3f6]' : 'bg-[#fff]'"
+                                                                class="w-1/12"
                                                                 rowspan="2"
                                                             >
                                                                 {{
@@ -258,30 +259,53 @@ import { Head } from "@inertiajs/vue3";
                                                             </td>
 
                                                             <td class="w-3/12">
-                                                                {{
-                                                                    match
-                                                                        ?.home_team
-                                                                        ?.english
-                                                                }}
+
+                                                                <div class="flex items-center">
+                                                                    <img v-if="match?.is_wn == 'win' || match?.is_wn == 'win_half'" class="h-[32px] border border-gray-400" src="/img/winner.gif"/>
+                                                                    <img v-else-if="match?.is_wn == 'loss' || match?.is_wn == 'loss_half'" class="h-[32px] border border-gray-400" src="/img/loser.gif"/>
+                                                                    <img v-else-if="match?.is_wn == 'draw'" class="h-[32px] border border-gray-400" src="/img/draw.gif"/>
+                                                                    <span class="ml-4">
+                                                                        {{
+                                                                            match
+                                                                                ?.home_team
+                                                                                ?.english
+                                                                        }}
+                                                                    </span>
+                                                                </div>
                                                             </td>
 
                                                             <td class="w-3/12">
-                                                                {{
-                                                                    match
-                                                                        ?.game7m
-                                                                        ?.home_team
-                                                                        ?.name
-                                                                }}
+                                                                <div class="flex items-center">
+                                                                    <img v-if="match?.is_wn == 'win' || match?.is_wn == 'win_half'" class="h-[32px] border border-gray-400" src="/img/winner.gif"/>
+                                                                    <img v-else-if="match?.is_wn == 'loss' || match?.is_wn == 'loss_half'" class="h-[32px] border border-gray-400" src="/img/loser.gif"/>
+                                                                    <img v-else-if="match?.is_wn == 'draw'" class="h-[32px] border border-gray-400" src="/img/draw.gif"/>
+                                                                    <span class="ml-4">
+                                                                        {{
+                                                                            match
+                                                                                ?.game7m
+                                                                                ?.home_team
+                                                                                ?.name
+                                                                        }}
+                                                                    </span>
+                                                                </div>
                                                             </td>
                                                             <td
-                                                                class="w-1/12 bg-[#ccd7f5]"
+                                                                class="w-2/12 bg-[#ccd7f5]"
                                                                 rowspan="2"
                                                             >
-                                                                <span>{{
-                                                                    getHandicap(
-                                                                        match.li
-                                                                    )
-                                                                }}</span>
+
+                                                                <div class="flex items-center justify-center">
+                                                                    <img v-if="match?.is_ov == 'over'" class="h-[32px] border border-gray-400" src="/img/over.gif"/>
+                                                                    <img v-else-if="match?.is_ov == 'under'" class="h-[32px] border border-gray-400" src="/img/under.gif"/>
+                                                                    <img v-else-if="match?.is_ov == 'draw'" class="h-[32px] border border-gray-400" src="/img/draw.gif"/>
+                                                                    <span class="ml-4">
+                                                                        {{
+                                                                            getHandicap(
+                                                                                match.li
+                                                                            )
+                                                                        }}
+                                                                    </span>
+                                                                </div>
                                                             </td>
                                                             <td
                                                                 class="w-1/12 bg-[#ccd7f5]"
@@ -301,7 +325,8 @@ import { Head } from "@inertiajs/vue3";
                                                             </td>
                                                         </tr>
                                                         <tr
-                                                            class="bg-[#f0f3f6] text-black text-center cursor-pointer hover:bg-purple-500 hover:bg-opacity-30"
+                                                            :class="im % 2 == 0 ? 'bg-[#f0f3f6]' : 'bg-[#fff]'"
+                                                            class="text-black text-center cursor-pointer hover:bg-purple-500 hover:bg-opacity-30"
                                                         >
                                                             <td class="w-1/12">
                                                                 {{
@@ -322,20 +347,34 @@ import { Head } from "@inertiajs/vue3";
                                                                 }}
                                                             </td>
                                                             <td class="w-3/12">
-                                                                {{
-                                                                    match
-                                                                        ?.away_team
-                                                                        ?.english
-                                                                }}
+                                                                <div class="flex items-center">
+                                                                    <img v-if="match?.is_wn == 'win' || match?.is_wn == 'win_half'" class="h-[32px] border border-gray-400" src="/img/loser.gif"/>
+                                                                    <img v-else-if="match?.is_wn == 'loss' || match?.is_wn == 'loss_half'" class="h-[32px] border border-gray-400" src="/img/winner.gif"/>
+                                                                    <img v-else-if="match?.is_wn == 'draw'" class="h-[32px] border border-gray-400" src="/img/draw.gif"/>
+                                                                    <span class="ml-4">
+                                                                        {{
+                                                                            match
+                                                                                ?.away_team
+                                                                                ?.english
+                                                                        }}
+                                                                    </span>
+                                                                </div>
                                                             </td>
 
                                                             <td class="w-3/12">
-                                                                {{
-                                                                    match
-                                                                        ?.game7m
-                                                                        ?.away_team
-                                                                        ?.name
-                                                                }}
+                                                                <div class="flex items-center">
+                                                                    <img v-if="match?.is_wn == 'win' || match?.is_wn == 'win_half'" class="h-[32px] border border-gray-400" src="/img/loser.gif"/>
+                                                                    <img v-else-if="match?.is_wn == 'loss' || match?.is_wn == 'loss_half'" class="h-[32px] border border-gray-400" src="/img/winner.gif"/>
+                                                                    <img v-else-if="match?.is_wn == 'draw'" class="h-[32px] border border-gray-400" src="/img/draw.gif"/>
+                                                                    <span class="ml-4">
+                                                                        {{
+                                                                            match
+                                                                                ?.game7m
+                                                                                ?.away_team
+                                                                                ?.name
+                                                                        }}
+                                                                    </span>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     </tbody>
