@@ -39,7 +39,14 @@ class DashboardController extends Controller
         // $today_unmatched = DB::select("SELECT COUNT(*) as today_unmatched FROM games WHERE gd = '$date' AND game7m_id IS NULL");
         
         $results = DB::table('games')
-            ->select(DB::raw('DATE(gt) as d'), DB::raw('COUNT(*) as t'))
+            ->select(DB::raw('DATE(gt) as d'), 
+                     DB::raw('COUNT(CASE WHEN is_wn = "win" OR is_wn = "win_half" THEN 1 END) as win_count'),
+                     DB::raw('COUNT(CASE WHEN is_wn = "loss" OR is_wn = "loss_half" THEN 1 END) as loss_count'),
+                     DB::raw('COUNT(CASE WHEN is_wn = "draw" THEN 1 END) as wn_draw_count'),
+                     DB::raw('COUNT(CASE WHEN is_ov = "over" THEN 1 END) as over_count'),
+                     DB::raw('COUNT(CASE WHEN is_ov = "under" THEN 1 END) as under_count'),
+                     DB::raw('COUNT(CASE WHEN is_ov = "draw" THEN 1 END) as ov_draw_count')
+            )
             ->where('gt', '>=', Carbon::now()->subDays(30))
             ->groupBy(DB::raw('DATE(gt)'))
             ->orderBy('d', 'asc')
