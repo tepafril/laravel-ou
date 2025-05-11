@@ -336,6 +336,9 @@ export default defineComponent({
                     title: {
                         display: true,
                         text: "Win/Loss/Draw Chart",
+                        font: {
+                            size: 24
+                        }
                     },
                 },
             },
@@ -346,6 +349,9 @@ export default defineComponent({
                     title: {
                         display: true,
                         text: "Over/Under/Draw Chart",
+                        font: {
+                            size: 24
+                        }
                     },
                 },
             },
