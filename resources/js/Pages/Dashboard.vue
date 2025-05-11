@@ -220,14 +220,14 @@
                             >
                                 <div>
                                     <Line
-                                        :data="chartData"
+                                        :data="winLossChartData"
                                         :options="chartOptions"
                                     />
                                 </div>
                                 <div>
                                     <Line
-                                        :data="chartData"
-                                        :options="chartOptions"
+                                        :data="overUnderChartData"
+                                        :options="overUnderChartOptions"
                                     />
                                 </div>
                             </div>
@@ -277,33 +277,56 @@ export default defineComponent({
                 total: 0,
             },
 
-            chartData: {
-                labels: [
-                    "2025-04-29",
-                    "2025-04-30",
-                    "2025-05-01",
-                    "2025-05-02",
-                    "2025-05-03",
-                    "2025-05-04",
-                    "2025-05-05",
-                    "2025-05-06",
-                    "2025-05-07",
-                ],
+            winLossChartData: {
+                labels: [],
                 datasets: [
                     {
-                        label: "Under",
-                        data: [30, 12, 51, 30, 12, 51, 30, 12, 51],
-                        borderColor: "#f07274",
+                        label: "Win",
+                        data: [],
+                        borderColor: "#4CAF50",
                         tension: 0.4,
                         fill: false,
                     },
                     {
-                        label: "Over",
-                        data: [20, 50, 30, 20, 50, 30, 20, 50, 30],
-                        borderColor: "#6ea1f9",
+                        label: "Loss",
+                        data: [],
+                        borderColor: "#f44336",
                         tension: 0.4,
                         fill: false,
                     },
+                    {
+                        label: "Draw",
+                        data: [],
+                        borderColor: "#FFC107",
+                        tension: 0.4,
+                        fill: false,
+                    }
+                ],
+            },
+            overUnderChartData: {
+                labels: [],
+                datasets: [
+                    {
+                        label: "Over",
+                        data: [],
+                        borderColor: "#2196F3",
+                        tension: 0.4,
+                        fill: false,
+                    },
+                    {
+                        label: "Under",
+                        data: [],
+                        borderColor: "#9C27B0",
+                        tension: 0.4,
+                        fill: false,
+                    },
+                    {
+                        label: "Draw",
+                        data: [],
+                        borderColor: "#FFC107",
+                        tension: 0.4,
+                        fill: false,
+                    }
                 ],
             },
             chartOptions: {
@@ -312,7 +335,17 @@ export default defineComponent({
                     legend: { position: "top" },
                     title: {
                         display: true,
-                        text: "Under/Over Line Chart",
+                        text: "Win/Loss/Draw Chart",
+                    },
+                },
+            },
+            overUnderChartOptions: {
+                responsive: true,
+                plugins: {
+                    legend: { position: "top" },
+                    title: {
+                        display: true,
+                        text: "Over/Under/Draw Chart",
                     },
                 },
             },
@@ -327,6 +360,24 @@ export default defineComponent({
             try {
                 this.isLoading = true;
                 this.dashboard = await getDashboard();
+                
+                // Update chart data
+                if (this.dashboard.ou_chart) {
+                    // Common labels for both charts
+                    const labels = this.dashboard.ou_chart.map(item => item.d);
+                    
+                    // Win/Loss/Draw Chart
+                    this.winLossChartData.labels = labels;
+                    this.winLossChartData.datasets[0].data = this.dashboard.ou_chart.map(item => item.win_count);
+                    this.winLossChartData.datasets[1].data = this.dashboard.ou_chart.map(item => item.loss_count);
+                    this.winLossChartData.datasets[2].data = this.dashboard.ou_chart.map(item => item.wn_draw_count);
+
+                    // Over/Under/Draw Chart
+                    this.overUnderChartData.labels = labels;
+                    this.overUnderChartData.datasets[0].data = this.dashboard.ou_chart.map(item => item.over_count);
+                    this.overUnderChartData.datasets[1].data = this.dashboard.ou_chart.map(item => item.under_count);
+                    this.overUnderChartData.datasets[2].data = this.dashboard.ou_chart.map(item => item.ov_draw_count);
+                }
             } catch (e) {
             } finally {
                 this.isLoading = false;
