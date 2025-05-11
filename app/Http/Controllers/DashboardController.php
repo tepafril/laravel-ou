@@ -47,7 +47,8 @@ class DashboardController extends Controller
                      DB::raw('COUNT(CASE WHEN is_ov = "under" THEN 1 END) as under_count'),
                      DB::raw('COUNT(CASE WHEN is_ov = "draw" THEN 1 END) as ov_draw_count')
             )
-            ->where('gt', '>=', Carbon::now()->subDays(30))
+            ->where('gt', '>=', Carbon::now()->subDays(30)->startOfDay())
+            ->where('gt', '<=', Carbon::now()->addDay()->endOfDay())
             ->groupBy(DB::raw('DATE(gt)'))
             ->orderBy('d', 'asc')
             ->get();
