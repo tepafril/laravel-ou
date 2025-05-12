@@ -37,6 +37,12 @@ Route::get('/matched', function () {
     return Inertia::render('Matched');
 })->middleware(['auth', 'verified'])->name('matched');
 
+
+Route::get('/order', function () {
+    return Inertia::render('RestaurantOrder');
+})->middleware(['auth', 'verified'])->name('order');
+
+
 Route::get('/unmatched', function () {
     return Inertia::render('Unmatched');
 })->middleware(['auth', 'verified'])->name('unmatched');
@@ -59,7 +65,7 @@ Route::get('/test', function(){
     );
     
     $qr = (BakongKHQR::generateIndividual($individualInfo));
-echo $qr->data["qr"];
+    echo $qr->data["qr"];
     // $sourceInfo = new SourceInfo(
     //     appIconUrl: 'https://bakong.nbc.gov.kh/images/logo.svg',
     //     appName: 'Bakong',
