@@ -19,251 +19,31 @@ import { Head } from "@inertiajs/vue3";
                     <div class="p-6 text-gray-900">
                         <!-- Table -->
                         <div class="gap-4 max-h-screen overflow-scroll">
-                            <!-- Lucky Sport -->
-                            <div
-                                id="cs-container"
-                                class="bg-gray-300 p-4 border-r border-gray-400"
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
                             >
-                                <div
-                                    id="sticky-title"
-                                    class="font-bold text-white flex items-center justify-center bg-[#3e6fa7] border-[#679898] border-t"
-                                >
-                                    <div class="w-2/12 text-center">
-                                        Kick Off
-                                    </div>
-
-                                    <div
-                                        class="w-1/12 border-[#679898] border-l"
-                                    ></div>
-                                    <div
-                                        class="w-3/12 border-[#679898] border-l"
-                                    >
-                                        <div
-                                            class="h-[72px] flex items-center justify-center border-[#679898] border-b"
-                                        >
-                                            Home
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="w-3/12 border-[#679898] border-l"
-                                    >
-                                        <div
-                                            class="h-[72px] flex items-center justify-center border-[#679898] border-b"
-                                        >
-                                            Away
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="w-1/12 border-[#679898] border-l"
-                                    >
-                                        <div class="text-center">&nbsp;</div>
-                                        <div class="text-center">
-                                            Total Goal
-                                        </div>
-                                        <div class="text-center">&nbsp;</div>
-                                    </div>
-                                    <div
-                                        class="w-1/12 border-[#679898] border-l"
-                                    >
-                                        <div class="text-center">&nbsp;</div>
-                                        <div class="text-center">Over</div>
-                                        <div class="text-center">&nbsp;</div>
-                                    </div>
-                                    <div
-                                        class="w-1/12 border-[#679898] border-l"
-                                    >
-                                        <div class="text-center">&nbsp;</div>
-                                        <div class="text-center">Under</div>
-                                        <div class="text-center">&nbsp;</div>
-                                    </div>
-                                </div>
-
-                                <template
-                                    v-for="(batch, i) in matches"
-                                    :key="i"
-                                >
-                                    <div class="relative">
-                                        <div
-                                            class="cs-box-date text-black font-bold text-center h-[24px]"
-                                        >
-                                            {{ formatDate(batch.gd) }}
-                                        </div>
-                                        <template
-                                            v-for="(
-                                                timeMatch, j
-                                            ) in batch.timeMatches"
-                                            :key="j"
-                                        >
-                                            <div
-                                                class="cs-box-league text-black font-bold h-[29px] px-2 flex flex-row items-center"
-                                            >
-                                                <div
-                                                    class="w-[7px] h-[22px] bg-[url('/img/rp_bg.png')] m-[0px_0px_0px_18px]"
-                                                    :style="`background-color:#${timeMatch.bg_color}`"
-                                                ></div>
-                                                <div class="ml-[8px]">
-                                                    {{ timeMatch.league7m }}
-                                                </div>
-                                            </div>
-                                            <div
-                                                v-for="match in timeMatch.matches"
-                                                :key="match.id"
-                                            >
-                                                <table
-                                                    class="w-full border-collapse cs-team-table"
-                                                    cellpadding="0"
-                                                    cellspacing="0"
-                                                >
-                                                    <tbody>
-                                                        <tr
-                                                            id="r403976"
-                                                            class="bg-[#f0f3f6] text-black text-center cursor-pointer hover:bg-purple-500 hover:bg-opacity-30"
-                                                            :class="[
-                                                                selectedId ==
-                                                                match.home_team
-                                                                    .id
-                                                                    ? 'bg-purple-500 bg-opacity-30'
-                                                                    : '',
-                                                            ]"
-                                                            @click="
-                                                                searchThisItem(
-                                                                    match
-                                                                        .home_team
-                                                                        .english,
-                                                                    match
-                                                                        .home_team
-                                                                        .id
-                                                                )
-                                                            "
-                                                        >
-                                                            <td
-                                                                class="w-2/12 bg-[#f0f3f6]"
-                                                                rowspan="2"
-                                                            >
-                                                                {{
-                                                                    extractTime(
-                                                                        match.gt
-                                                                    )
-                                                                }}
-                                                            </td>
-
-                                                            <td
-                                                                class="w-1/12 bg-[#f0f3f6]"
-                                                            >
-                                                                LS
-                                                            </td>
-                                                            <td class="w-3/12">
-                                                                {{
-                                                                    match
-                                                                        ?.home_team
-                                                                        ?.english
-                                                                }}
-                                                            </td>
-                                                            <td class="w-3/12">
-                                                                {{
-                                                                    match
-                                                                        ?.away_team
-                                                                        ?.english
-                                                                }}
-                                                            </td>
-                                                            <td
-                                                                class="w-1/12 bg-[#ccd7f5]"
-                                                            >
-                                                                <span>{{
-                                                                    match.home_o1 *
-                                                                    1
-                                                                }}</span>
-                                                            </td>
-                                                            <td
-                                                                class="w-1/12 bg-[#ccd7f5]"
-                                                            >
-                                                                <span>{{
-                                                                    match.home_o2 *
-                                                                    1
-                                                                }}</span>
-                                                            </td>
-                                                            <td
-                                                                class="w-1/12 bg-[#ccd7f5]"
-                                                            >
-                                                                <span>{{
-                                                                    match.home_o3 *
-                                                                    1
-                                                                }}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr
-                                                            class="bg-[#f0f3f6] text-black text-center cursor-pointer hover:bg-purple-500 hover:bg-opacity-30"
-                                                            :class="[
-                                                                selectedId ==
-                                                                match.away_team
-                                                                    .id
-                                                                    ? 'bg-purple-500 bg-opacity-30'
-                                                                    : '',
-                                                            ]"
-                                                            @click="
-                                                                searchThisItem(
-                                                                    match
-                                                                        .away_team
-                                                                        .english,
-                                                                    match
-                                                                        .away_team
-                                                                        .id
-                                                                )
-                                                            "
-                                                        >
-                                                            <td
-                                                                class="w-1/12 bg-[#f0f3f6]"
-                                                            >
-                                                                7m
-                                                            </td>
-                                                            <td class="w-3/12">
-                                                                {{
-                                                                    match
-                                                                        ?.game7m
-                                                                        ?.home_team
-                                                                        ?.name
-                                                                }}
-                                                            </td>
-                                                            <td class="w-3/12">
-                                                                {{
-                                                                    match
-                                                                        ?.game7m
-                                                                        ?.away_team
-                                                                        ?.name
-                                                                }}
-                                                            </td>
-                                                            <td
-                                                                class="m7_score1 bg-[#ccd7f5]"
-                                                            >
-                                                                <span>{{
-                                                                    match.away_o1 *
-                                                                    1
-                                                                }}</span>
-                                                            </td>
-                                                            <td
-                                                                class="m7_score2 bg-[#ccd7f5]"
-                                                            >
-                                                                <span>{{
-                                                                    match.away_o2 *
-                                                                    1
-                                                                }}</span>
-                                                            </td>
-                                                            <td
-                                                                class="m7_score3 bg-[#ccd7f5]"
-                                                            >
-                                                                <span>{{
-                                                                    match.away_o3 *
-                                                                    1
-                                                                }}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </template>
-                                    </div>
-                                </template>
-                            </div>
+                                <title>close-thick</title>
+                                <path
+                                    d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"
+                                />
+                            </svg>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                            >
+                                <title>equal</title>
+                                <path d="M19,10H5V8H19V10M19,16H5V14H19V16Z" />
+                            </svg>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                            >
+                                <title>circle-outline</title>
+                                <path
+                                    d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
+                                />
+                            </svg>
                         </div>
                     </div>
                 </div>

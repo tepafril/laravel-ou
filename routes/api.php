@@ -6,6 +6,7 @@ use App\Http\Controllers\FetcherController;
 use App\Http\Controllers\CompareController;
 use App\Http\Controllers\ViewController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,3 +59,5 @@ Route::get('/dashboard',                                           [DashboardCon
 Route::get('/dashboard/{start_date}/{end_date}',                   [DashboardController::class, 'dashboard']);
 
 
+
+Route::get('/report/countS20',                                      [ReportController::class, 'getIgameCountByF20a']);
