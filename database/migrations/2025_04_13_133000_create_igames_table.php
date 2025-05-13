@@ -26,15 +26,16 @@ return new class extends Migration
             $table->decimal('oo', 5, 2)->nullable(); // Original oo field
             $table->decimal('uo', 5, 2)->nullable(); // Original ou field
             $table->decimal('li', 5, 2)->nullable(); // li_decimal
+            $table->enum('handi', ['home', 'away'])->nullable();
 
             // Add indexes for frequently queried fields
             $table->index('gt');
-            $table->index('st');
             $table->index('oo');
             $table->index('uo');
             $table->index('li');
             $table->index('f20');
             $table->index('f20a');
+            $table->index('handi');
 
             $table->enum('is_wn', ['draw', 'win_half', 'win', 'loss_half', 'loss'])->nullable();
             $table->enum('is_ov', ['over', 'under', 'draw'])->nullable();
