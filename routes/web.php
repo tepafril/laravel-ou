@@ -33,6 +33,10 @@ Route::get('/result', function () {
     return Inertia::render('Result');
 })->middleware(['auth', 'verified'])->name('result');
 
+Route::get('/report', function () {
+    return Inertia::render('Report');
+})->middleware(['auth', 'verified'])->name('report');
+
 Route::get('/matched', function () {
     return Inertia::render('Matched');
 })->middleware(['auth', 'verified'])->name('matched');
