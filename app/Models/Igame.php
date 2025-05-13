@@ -21,6 +21,7 @@ class Igame extends Model
         'fths',
         'ftas',
         'ln',
+        'lns',
         'hn',
         'an',
         'oo',

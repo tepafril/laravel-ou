@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('fths')->nullable(); // ft_home_score
             $table->integer('ftas')->nullable(); // ft_away_score
             $table->string('ln')->nullable(); // league.name
+            $table->string('lns')->nullable(); // league.name
             $table->string('hn')->nullable(); // home_team.name
             $table->string('an')->nullable(); // away_team.name
             $table->decimal('oo', 5, 2)->nullable(); // Original oo field
