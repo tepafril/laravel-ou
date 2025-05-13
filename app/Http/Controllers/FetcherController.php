@@ -728,7 +728,8 @@ class FetcherController extends Controller
                     [
                         'gt' => $game->gt,
                         'f20' => $game->game7m->f20,
-                        'f20a' => $game->game7m->f20a,
+                        'f20a' => abs($game->game7m->f20a),
+                        'handi' => $game->game7m->f20a >=0 ? 'home' : 'away',
                         'f20b' => $game->game7m->f20b,
                         'st' => $game->game7m->status,
                         'fths' => $game->game7m->ft_home_score,
