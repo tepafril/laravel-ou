@@ -33,6 +33,8 @@ class ReportController extends Controller
             ->keyBy('f20a')
             ->toArray();
 
+        return $counts;
+
         // Create final result with all handicap values
         $result = [];
         foreach ($handicaps as $handicap) {
