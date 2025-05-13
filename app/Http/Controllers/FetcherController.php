@@ -679,7 +679,7 @@ class FetcherController extends Controller
         
             $games = Game::with(['away_team', 'home_team', 'league', 'game7m', 'game7m.home_team', 'game7m.away_team', 'game7m.league'])
                 ->whereNotNull('game7m_id')
-                ->where('is_wn', NULL)
+                // ->where('is_wn', NULL)
                 ->whereHas('game7m', function($query) {
                     $query->where('status', 4);
                 })
