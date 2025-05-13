@@ -29,11 +29,7 @@ class ReportController extends Controller
             ->whereNotNull('f20a')
             ->where('f20a', '!=', '')
             ->groupBy(DB::raw('ABS(f20a)'))
-            ->get()
-            ->keyBy('f20a')
-            ->toArray();
-
-        return $counts;
+            ->get();
 
         // Create final result with all handicap values
         $result = [];
