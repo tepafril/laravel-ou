@@ -12,6 +12,7 @@ class ReportController extends Controller
     {
         $counts = Igame::select(DB::raw('ABS(f20a) as f20a'), DB::raw('count(*) as count'))
             ->whereNotNull('f20a')
+            ->where('f20a', '!=', '')
             ->groupBy(DB::raw('ABS(f20a)'))
             ->orderBy(DB::raw('ABS(f20a)'))
             ->get();
