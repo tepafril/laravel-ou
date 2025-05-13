@@ -118,3 +118,15 @@ export async function confirmMatch(gameId, game7mId) {
     throw apiError(error, {})
   }
 }
+
+
+export async function fetchReportCountS20(gameId, game7mId) {
+  try {
+    const response = await client().get(`report/countS20`)
+    return response.data
+
+  } catch (error) {
+    console.error(error)
+    throw apiError(error, {})
+  }
+}

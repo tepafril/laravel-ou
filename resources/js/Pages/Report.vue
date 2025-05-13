@@ -1,30 +1,3 @@
-<script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
-import { ref, onMounted } from "vue";
-import axios from "axios";
-import SvgIcon from "@/Components/SvgIcon.vue";
-
-const handicaps = ref([]);
-const isLoading = ref(true);
-
-const fetchHandicapStats = async () => {
-    try {
-        isLoading.value = true;
-        const response = await axios.get("/api/report/igame-count-by-f20a");
-        handicaps.value = response.data;
-    } catch (error) {
-        console.error("Error fetching handicap stats:", error);
-    } finally {
-        isLoading.value = false;
-    }
-};
-
-onMounted(() => {
-    fetchHandicapStats();
-});
-</script>
-
 <template>
     <Head title="Handicap Report" />
 
@@ -44,54 +17,95 @@ onMounted(() => {
                         class="space-x-2"
                     >
                         <button
-                            class="relative inline-flex items-center bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-2 border border-gray-500 hover:border-transparent rounded w-16 text-lg justify-center"
-                            :class="
-                                currentS2 == 0 ? 'bg-gray-500 text-white' : ''
-                            "
+                            class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-16 text-lg justify-center"
+                            :class="[
+                                currentS2 == 0 ? 'bg-gray-500 text-white' : '',
+                                getHandicapCount(0 + i) == 0
+                                    ? 'opacity-30 cursor-not-allowed'
+                                    : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
+                            ]"
                             @click="viewport(0 + i)"
                         >
                             {{ i == 0 ? "=" : i }}
+                            <div
+                                v-if="getHandicapCount(0 + i) > 0"
+                                class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                            >
+                                {{ getHandicapCount(0 + i) }}
+                            </div>
                         </button>
                         <button
-                            class="relative inline-flex items-center bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-2 border border-gray-500 hover:border-transparent rounded w-16 text-lg justify-center"
-                            :class="
+                            class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-16 text-lg justify-center"
+                            :class="[
                                 currentS2 == 0.25
                                     ? 'bg-gray-500 text-white'
-                                    : ''
-                            "
+                                    : '',
+                                getHandicapCount(0.25 + i) == 0
+                                    ? 'opacity-30 cursor-not-allowed'
+                                    : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
+                            ]"
                             @click="viewport(0.25 + i)"
                         >
                             {{ i }}+½
+                            <div
+                                v-if="getHandicapCount(0.25 + i) > 0"
+                                class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                            >
+                                {{ getHandicapCount(0.25 + i) }}
+                            </div>
                         </button>
                         <button
-                            class="relative inline-flex items-center bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-2 border border-gray-500 hover:border-transparent rounded w-16 text-lg justify-center"
-                            :class="
-                                currentS2 == 0.5 ? 'bg-gray-500 text-white' : ''
-                            "
+                            class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-16 text-lg justify-center"
+                            :class="[
+                                currentS2 == 0.5
+                                    ? 'bg-gray-500 text-white'
+                                    : '',
+                                getHandicapCount(0.5 + i) == 0
+                                    ? 'opacity-30 cursor-not-allowed'
+                                    : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
+                            ]"
                             @click="viewport(0.5 + i)"
                         >
                             {{ i == 0 ? "" : i }}½
+                            <div
+                                v-if="getHandicapCount(0.5 + i) > 0"
+                                class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                            >
+                                {{ getHandicapCount(0.5 + i) }}
+                            </div>
                         </button>
                         <button
-                            class="relative inline-flex items-center bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-2 border border-gray-500 hover:border-transparent rounded w-16 text-lg justify-center"
-                            :class="
+                            class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-16 text-lg justify-center"
+                            :class="[
                                 currentS2 == 0.75
                                     ? 'bg-gray-500 text-white'
-                                    : ''
-                            "
+                                    : '',
+                                getHandicapCount(0.75 + i) == 0
+                                    ? 'opacity-30 cursor-not-allowed'
+                                    : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
+                            ]"
                             @click="viewport(0.75 + i)"
                         >
                             {{ i == 0 ? "" : i }}½+{{ i + 1 }}
-                            <!-- <div
+                            <div
+                                v-if="getHandicapCount(0.75 + i) > 0"
                                 class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
-                            >12</div> -->
+                            >
+                                {{ getHandicapCount(0.75 + i) }}
+                            </div>
                         </button>
                     </div>
                 </div>
                 <div
                     class="w-full bg-white overflow-hidden shadow-sm sm:rounded-lg"
                 >
-                    <div class="p-6 text-gray-900">
+                    <div
+                        v-if="isLoading"
+                        class="py-6 flex items-center justify-center w-full"
+                    >
+                        <Loading />
+                    </div>
+                    <div v-else class="p-6 text-gray-900">
                         <!-- SVG Icons -->
                         <div class="flex gap-1 mb-4">
                             <SvgIcon name="close-thick" color="#EF4444" />
@@ -128,6 +142,81 @@ onMounted(() => {
         </div>
     </AuthenticatedLayout>
 </template>
+
+<script>
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { Head } from "@inertiajs/vue3";
+import SvgIcon from "@/Components/SvgIcon.vue";
+
+import { defineComponent } from "vue";
+import {
+    fetch7mGames,
+    getCorrectScoreMatch,
+    fetchReportCountS20,
+} from "@/Services/correct_score";
+import {
+    extractTime,
+    extractTime7m,
+    formatDate,
+    findMatchingIndices,
+    getHandicap,
+} from "@/Types/func/index";
+import { HANDICAP } from "@/Types/const/index";
+
+import _ from "lodash";
+import Fuse from "fuse.js";
+
+import { Calendar, DatePicker } from "v-calendar";
+import "v-calendar/style.css";
+import Loading from "@/Components/Loading.vue";
+import { getHandicapByValue } from "@/Types/func/func";
+
+const fuseOptions = {
+    threshold: 0.3,
+    keys: ["away_team.name", "home_team.name"],
+};
+export function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export default defineComponent({
+    components: {
+        Calendar,
+        DatePicker,
+        Loading,
+        AuthenticatedLayout,
+        Head,
+        SvgIcon,
+    },
+    data() {
+        return {
+            isLoading: false,
+            s20Count: [],
+        };
+    },
+    watch: {},
+    computed: {},
+    methods: {
+        async fetchReportCountS20() {
+            try {
+                this.isLoading = true;
+                this.s20Count = await fetchReportCountS20();
+            } catch (e) {
+                //
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        getHandicapCount(val) {
+            const count = this.s20Count.find((x) => x.f20a === val);
+            return count ? count.count : 0;
+        },
+    },
+    async mounted() {
+        await this.fetchReportCountS20();
+    },
+});
+</script>
 
 <style scoped>
 .grid {
