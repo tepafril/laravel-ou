@@ -32,14 +32,14 @@ class ReportController extends Controller
             ->get();
 
         // Create final result with all handicap values
-        $result = [];
-        foreach ($handicaps as $handicap) {
-            $result[] = [
-                'f20a' => $handicap,
-                'count' => $counts[$handicap]['count'] ?? 0
-            ];
-        }
+        // $result = [];
+        // foreach ($handicaps as $handicap) {
+        //     $result[] = [
+        //         'f20a' => $handicap,
+        //         'count' => $counts[$handicap]['count'] ?? 0
+        //     ];
+        // }
 
-        return response()->json($result);
+        return response()->json($counts);
     }
 }
