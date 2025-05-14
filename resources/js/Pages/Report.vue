@@ -19,12 +19,16 @@
                         <button
                             class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-16 text-lg justify-center"
                             :class="[
+                                selectedS2 == 0 + i
+                                    ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
+                                    : '',
+                                ,
                                 currentS2 == 0 ? 'bg-gray-500 text-white' : '',
                                 getHandicapCount(0 + i) == 0
                                     ? 'opacity-30 cursor-not-allowed'
                                     : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
                             ]"
-                            @click="viewport(0 + i)"
+                            @click="viewS2(0 + i)"
                         >
                             {{ i == 0 ? "=" : i }}
                             <div
@@ -37,6 +41,10 @@
                         <button
                             class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-16 text-lg justify-center"
                             :class="[
+                                selectedS2 == 0.25 + i
+                                    ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
+                                    : '',
+                                ,
                                 currentS2 == 0.25
                                     ? 'bg-gray-500 text-white'
                                     : '',
@@ -44,7 +52,7 @@
                                     ? 'opacity-30 cursor-not-allowed'
                                     : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
                             ]"
-                            @click="viewport(0.25 + i)"
+                            @click="viewS2(0.25 + i)"
                         >
                             {{ i }}+½
                             <div
@@ -57,6 +65,10 @@
                         <button
                             class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-16 text-lg justify-center"
                             :class="[
+                                selectedS2 == 0.5 + i
+                                    ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
+                                    : '',
+                                ,
                                 currentS2 == 0.5
                                     ? 'bg-gray-500 text-white'
                                     : '',
@@ -64,7 +76,7 @@
                                     ? 'opacity-30 cursor-not-allowed'
                                     : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
                             ]"
-                            @click="viewport(0.5 + i)"
+                            @click="viewS2(0.5 + i)"
                         >
                             {{ i == 0 ? "" : i }}½
                             <div
@@ -77,6 +89,10 @@
                         <button
                             class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-16 text-lg justify-center"
                             :class="[
+                                selectedS2 == 0.75 + i
+                                    ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
+                                    : '',
+                                ,
                                 currentS2 == 0.75
                                     ? 'bg-gray-500 text-white'
                                     : '',
@@ -84,7 +100,7 @@
                                     ? 'opacity-30 cursor-not-allowed'
                                     : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
                             ]"
-                            @click="viewport(0.75 + i)"
+                            @click="viewS2(0.75 + i)"
                         >
                             {{ i == 0 ? "" : i }}½+{{ i + 1 }}
                             <div
@@ -152,7 +168,7 @@ import { defineComponent } from "vue";
 import {
     fetch7mGames,
     getCorrectScoreMatch,
-    fetchReportCountS20,
+    fetchReportCountS2,
 } from "@/Services/correct_score";
 import {
     extractTime,
@@ -192,15 +208,26 @@ export default defineComponent({
         return {
             isLoading: false,
             s20Count: [],
+            liCount: [],
+            selectedS2: null,
         };
     },
     watch: {},
-    computed: {},
     methods: {
-        async fetchReportCountS20() {
+        async fetchReportCountS2() {
             try {
                 this.isLoading = true;
-                this.s20Count = await fetchReportCountS20();
+                this.s20Count = await fetchReportCountS2();
+            } catch (e) {
+                //
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        async fetchReportCountLi() {
+            try {
+                this.isLoading = true;
+                this.liCount = await fetchReportCountLi(this.selectedS2);
             } catch (e) {
                 //
             } finally {
@@ -211,9 +238,15 @@ export default defineComponent({
             const count = this.s20Count.find((x) => x.f20a === val);
             return count ? count.count : 0;
         },
+        async viewS2(value) {
+            if (this.getHandicapCount(value) > 0) {
+                this.selectedS2 = value;
+                await this.fetchReportCountLi();
+            }
+        },
     },
     async mounted() {
-        await this.fetchReportCountS20();
+        await this.fetchReportCountS2();
     },
 });
 </script>

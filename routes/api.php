@@ -60,4 +60,5 @@ Route::get('/dashboard/{start_date}/{end_date}',                   [DashboardCon
 
 
 
-Route::get('/report/countS20',                                      [ReportController::class, 'getIgameCountByF20a']);
+Route::get('/report/countS2',                                      [ReportController::class, 'getIgameCountByF20a']);
+Route::get('/report/countS2/{s2}/li',                              [ReportController::class, 'getIgameCountByLi']);
