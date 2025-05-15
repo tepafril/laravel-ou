@@ -37,6 +37,7 @@ class ReportController extends Controller
         // Get actual counts from database
         $counts = DB::table('igames')
             ->select([
+                'id',
                 'an',
                 'f20a',
                 'ftas',
