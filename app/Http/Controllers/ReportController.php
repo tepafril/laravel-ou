@@ -36,7 +36,22 @@ class ReportController extends Controller
     {
         // Get actual counts from database
         $counts = DB::table('igames')
-            ->select('an', 'f20a', 'ftas', 'fths', 'gt', 'handi', 'hn', 'is_ov', 'is_wn', 'li', 'ln', 'lns', 'oo', 'uo')
+            ->select([
+                'an',
+                'f20a',
+                'ftas',
+                'fths',
+                'gt',
+                'handi',
+                'hn',
+                'is_ov',
+                'is_wn',
+                'li',
+                'ln',
+                'lns',
+                'oo',
+                'uo'
+            ])
             ->where('f20a', $s2)
             ->where('li', $li)
             ->paginate(100);
