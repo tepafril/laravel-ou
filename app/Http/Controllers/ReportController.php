@@ -46,7 +46,6 @@ class ReportController extends Controller
                 'hn',
                 'is_ov',
                 'is_wn',
-                'li',
                 'ln',
                 'lns',
                 'oo',
