@@ -9,38 +9,33 @@
         </template>
 
         <div class="py-12">
+            <ul class="flex flex-wrap -mb-px">
+                <li class="me-2" @click="selectedTab = 's2'">
+                    <a
+                        class="cursor-pointer"
+                        :class="
+                            selectedTab == 's2'
+                                ? 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active '
+                                : 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 '
+                        "
+                        >S2 Handicap</a
+                    >
+                </li>
+                <li class="me-2" @click="selectedTab = 'li'">
+                    <a
+                        class="cursor-pointer"
+                        :class="
+                            selectedTab == 'li'
+                                ? 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active '
+                                : 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 '
+                        "
+                        aria-current="page"
+                        >Over/Under Handicap</a
+                    >
+                </li>
+            </ul>
             <div class="w-full mx-auto sm:px-6 lg:px-8 flex items-start">
                 <div class="w-[360px]">
-                    <div
-                        class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700 mb-4"
-                    >
-                        <ul class="flex flex-wrap -mb-px">
-                            <li class="me-2" @click="selectedTab = 's2'">
-                                <a
-                                    class="cursor-pointer"
-                                    :class="
-                                        selectedTab == 's2'
-                                            ? 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active '
-                                            : 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 '
-                                    "
-                                    >S2 Handicap</a
-                                >
-                            </li>
-                            <li class="me-2" @click="selectedTab = 'li'">
-                                <a
-                                    class="cursor-pointer"
-                                    :class="
-                                        selectedTab == 'li'
-                                            ? 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active '
-                                            : 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 '
-                                    "
-                                    aria-current="page"
-                                    >Over/Under Handicap</a
-                                >
-                            </li>
-                        </ul>
-                    </div>
-
                     <div
                         v-if="selectedTab == 's2'"
                         class="w-[360px] space-y-2 bg-white p-1"
@@ -282,11 +277,21 @@
                                                 >
                                             </div>
 
-                                            <SvgIcon
-                                                v-for="home in record.home"
-                                                name="close-thick"
-                                                color="#EF4444"
-                                            />
+                                            <template
+                                                v-for="homeRec in record.home"
+                                            >
+                                                <SvgIcon
+                                                    :name="
+                                                        getSign(homeRec, 'home')
+                                                    "
+                                                    :color="
+                                                        getColor(
+                                                            homeRec,
+                                                            'home'
+                                                        )
+                                                    "
+                                                />
+                                            </template>
                                         </div>
                                         <div class="flex items-center">
                                             <div class="w-[120px]">
@@ -449,6 +454,27 @@ export default defineComponent({
                 (x) => Number(x.li) === Number(val)
             );
             return count ? count.count : 0;
+        },
+        getSign(record, homeOrAway) {
+            if (record?.is_wn == "win" || record?.is_wn == "win_half") {
+                return "close-thick";
+            } else if (
+                record?.is_wn == "loss" ||
+                record?.is_wn == "loss_half"
+            ) {
+                return "circle-outline";
+            } else {
+                return "equal";
+            }
+        },
+        getColor(record, homeOrAway) {
+            if (record?.is_ov == "over") {
+                return "#EF4444";
+            } else if (record?.is_wn == "under") {
+                return "#3B82F6";
+            } else {
+                return "#000000";
+            }
         },
         async viewS2(value) {
             if (this.getHandicapCount(value) > 0) {
