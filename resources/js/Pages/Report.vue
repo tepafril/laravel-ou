@@ -17,7 +17,7 @@
                         <ul class="flex flex-wrap -mb-px">
                             <li class="me-2" @click="selectedTab = 's2'">
                                 <a
-                                    href="#"
+                                    class="cursor-pointer"
                                     :class="
                                         selectedTab == 's2'
                                             ? 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active '
@@ -28,7 +28,7 @@
                             </li>
                             <li class="me-2" @click="selectedTab = 'li'">
                                 <a
-                                    href="#"
+                                    class="cursor-pointer"
                                     :class="
                                         selectedTab == 'li'
                                             ? 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active '
@@ -263,12 +263,53 @@
                     >
                         <Loading />
                     </div>
-                    <div v-else class="p-6 text-gray-900">
+                    <div v-else class="p-2 text-gray-900 border rounded-lg">
                         <!-- SVG Icons -->
                         <div class="flex gap-1 mb-4">
-                            <SvgIcon name="close-thick" color="#EF4444" />
+                            <div class="w-full space-y-4">
+                                <div
+                                    v-for="record in recordObj?.data ?? []"
+                                    class="border rounded-lg w-full p-2"
+                                >
+                                    <div class="w-full">
+                                        <div class="flex items-center">
+                                            <div class="w-[120px]">
+                                                {{ record.oo }} -
+                                                {{ record.uo }}:
+                                                <span
+                                                    class="text-blue-600 text-lg font-bold"
+                                                    >H</span
+                                                >
+                                            </div>
+
+                                            <SvgIcon
+                                                v-for="home in record.home"
+                                                name="close-thick"
+                                                color="#EF4444"
+                                            />
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="w-[120px]">
+                                                {{ record.oo }} -
+                                                {{ record.uo }}:
+                                                <span
+                                                    class="text-red-600 text-lg font-bold"
+                                                    >A</span
+                                                >
+                                            </div>
+
+                                            <SvgIcon
+                                                v-for="away in record.away"
+                                                name="close-thick"
+                                                color="#EF4444"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <SvgIcon name="close-thick" color="#EF4444" />
                             <SvgIcon name="equal" color="#3B82F6" size="24" />
-                            <SvgIcon name="circle-outline" color="#10B981" />
+                            <SvgIcon name="circle-outline" color="#10B981" /> -->
                         </div>
 
                         <div
@@ -357,6 +398,7 @@ export default defineComponent({
             selectedTab: "s2", // 's2' | 'li'
             selectedS2: null,
             selectedLi: null,
+            recordObj: null,
         };
     },
     watch: {},
@@ -384,12 +426,12 @@ export default defineComponent({
         async fetchReportRecords() {
             try {
                 this.isLoading = true;
-                const records = new Record();
-                await records.fetchReportRecords(
+                this.recordObj = new Record();
+                await this.recordObj.fetchReportRecords(
                     this.selectedS2,
                     this.selectedLi
                 );
-                console.log(records.data);
+                console.log(this.recordObj.data);
             } catch (e) {
                 //
             } finally {
@@ -412,6 +454,7 @@ export default defineComponent({
             if (this.getHandicapCount(value) > 0) {
                 this.selectedS2 = value;
                 this.selectedLi = null;
+                this.recordObj = null;
                 this.selectedTab = "li";
                 await this.fetchReportCountLi();
             }

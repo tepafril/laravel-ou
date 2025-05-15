@@ -53,6 +53,7 @@ class ReportController extends Controller
             ])
             ->where('f20a', $s2)
             ->where('li', $li)
+            ->orderBy('oo', 'asc')
             ->paginate(100);
 
         return response()->json($counts);

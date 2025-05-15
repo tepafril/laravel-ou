@@ -152,15 +152,43 @@ export class Record{
     try {
       
       let response = await client().get(`report/records/${s2}/${li}?page=${this.page}`)
-      this.data = [...this.data, response.data.data]
+      this.data = [...this.data, ...response.data.data]
       if (response.data.current_page < response.data.last_page) {
         this.page++;
         await this.fetchReportRecords(s2, li);
+      }else{
+        this.data = this.data.map(item => ({
+          ...item,
+          k: `k-${item.oo}-${item.uo}`
+        }));
+
+        this.data = this.groupByKAndHandi(this.data);
       }
     } catch (error) {
       console.error(error)
       throw apiError(error, {})
     }
+  }
+
+  groupByKAndHandi(data) {
+    return data
+      .map(item => ({
+        ...item,
+        k: `k-${item.oo}-${item.uo}`
+      }))
+      .reduce((acc, item) => {
+        const { k, handi } = item;
+        const outcome = item.handi;
+
+        if (!acc[k]) {
+          acc[k] = { home: [], away: [] };
+        }
+
+        acc[k]['oo'] = item.oo;
+        acc[k]['uo'] = item.uo;
+        acc[k][outcome].push(item);
+        return acc;
+      }, {});
   }
 }
 
