@@ -4,112 +4,254 @@
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Handicap Report
+                Handicap Report {{ selectedTab }}
             </h2>
         </template>
 
         <div class="py-12">
             <div class="w-full mx-auto sm:px-6 lg:px-8 flex items-start">
-                <div class="w-[360px] space-y-2 bg-white p-1">
-                    <div class="text-xl text-center">S2 Handicap</div>
+                <div class="w-[360px]">
                     <div
-                        v-for="i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"
-                        class="space-x-2"
+                        class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700 mb-4"
                     >
-                        <button
-                            class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-16 text-lg justify-center"
-                            :class="[
-                                selectedS2 == 0 + i
-                                    ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
-                                    : '',
-                                ,
-                                currentS2 == 0 ? 'bg-gray-500 text-white' : '',
-                                getHandicapCount(0 + i) == 0
-                                    ? 'opacity-30 cursor-not-allowed'
-                                    : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
-                            ]"
-                            @click="viewS2(0 + i)"
+                        <ul class="flex flex-wrap -mb-px">
+                            <li class="me-2" @click="selectedTab = 's2'">
+                                <a
+                                    href="#"
+                                    :class="
+                                        selectedTab == 's2'
+                                            ? 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active '
+                                            : 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 '
+                                    "
+                                    >S2 Handicap</a
+                                >
+                            </li>
+                            <li class="me-2" @click="selectedTab = 'li'">
+                                <a
+                                    href="#"
+                                    :class="
+                                        selectedTab == 'li'
+                                            ? 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active '
+                                            : 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 '
+                                    "
+                                    aria-current="page"
+                                    >Over/Under Handicap</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div
+                        v-if="selectedTab == 's2'"
+                        class="w-[360px] space-y-2 bg-white p-1"
+                    >
+                        <div
+                            v-for="i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"
+                            class="space-x-2"
                         >
-                            {{ i == 0 ? "=" : i }}
-                            <div
-                                v-if="getHandicapCount(0 + i) > 0"
-                                class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                            <button
+                                class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-[80px] text-lg justify-center"
+                                :class="[
+                                    selectedS2 == 0 + i
+                                        ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
+                                        : '',
+                                    ,
+                                    currentS2 == 0
+                                        ? 'bg-gray-500 text-white'
+                                        : '',
+                                    getHandicapCount(0 + i) == 0
+                                        ? 'opacity-30 cursor-not-allowed'
+                                        : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
+                                ]"
+                                @click="viewS2(0 + i)"
                             >
-                                {{ getHandicapCount(0 + i) }}
-                            </div>
-                        </button>
-                        <button
-                            class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-16 text-lg justify-center"
-                            :class="[
-                                selectedS2 == 0.25 + i
-                                    ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
-                                    : '',
-                                ,
-                                currentS2 == 0.25
-                                    ? 'bg-gray-500 text-white'
-                                    : '',
-                                getHandicapCount(0.25 + i) == 0
-                                    ? 'opacity-30 cursor-not-allowed'
-                                    : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
-                            ]"
-                            @click="viewS2(0.25 + i)"
+                                {{ i == 0 ? "=" : i }}
+                                <div
+                                    v-if="getHandicapCount(0 + i) > 0"
+                                    class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                                >
+                                    {{ getHandicapCount(0 + i) }}
+                                </div>
+                            </button>
+                            <button
+                                class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-[80px] text-lg justify-center"
+                                :class="[
+                                    selectedS2 == 0.25 + i
+                                        ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
+                                        : '',
+                                    ,
+                                    currentS2 == 0.25
+                                        ? 'bg-gray-500 text-white'
+                                        : '',
+                                    getHandicapCount(0.25 + i) == 0
+                                        ? 'opacity-30 cursor-not-allowed'
+                                        : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
+                                ]"
+                                @click="viewS2(0.25 + i)"
+                            >
+                                {{ i }}+½
+                                <div
+                                    v-if="getHandicapCount(0.25 + i) > 0"
+                                    class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                                >
+                                    {{ getHandicapCount(0.25 + i) }}
+                                </div>
+                            </button>
+                            <button
+                                class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-[80px] text-lg justify-center"
+                                :class="[
+                                    selectedS2 == 0.5 + i
+                                        ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
+                                        : '',
+                                    ,
+                                    currentS2 == 0.5
+                                        ? 'bg-gray-500 text-white'
+                                        : '',
+                                    getHandicapCount(0.5 + i) == 0
+                                        ? 'opacity-30 cursor-not-allowed'
+                                        : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
+                                ]"
+                                @click="viewS2(0.5 + i)"
+                            >
+                                {{ i == 0 ? "" : i }}½
+                                <div
+                                    v-if="getHandicapCount(0.5 + i) > 0"
+                                    class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                                >
+                                    {{ getHandicapCount(0.5 + i) }}
+                                </div>
+                            </button>
+                            <button
+                                class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-[80px] text-lg justify-center"
+                                :class="[
+                                    selectedS2 == 0.75 + i
+                                        ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
+                                        : '',
+                                    ,
+                                    currentS2 == 0.75
+                                        ? 'bg-gray-500 text-white'
+                                        : '',
+                                    getHandicapCount(0.75 + i) == 0
+                                        ? 'opacity-30 cursor-not-allowed'
+                                        : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
+                                ]"
+                                @click="viewS2(0.75 + i)"
+                            >
+                                {{ i == 0 ? "" : i }}½+{{ i + 1 }}
+                                <div
+                                    v-if="getHandicapCount(0.75 + i) > 0"
+                                    class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                                >
+                                    {{ getHandicapCount(0.75 + i) }}
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        v-else-if="selectedTab == 'li'"
+                        class="w-[360px] space-y-2 bg-white p-1"
+                    >
+                        <div
+                            v-for="i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"
+                            class="space-x-2"
                         >
-                            {{ i }}+½
-                            <div
-                                v-if="getHandicapCount(0.25 + i) > 0"
-                                class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                            <button
+                                class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-[80px] text-lg justify-center"
+                                :class="[
+                                    selectedLi == 0 + i
+                                        ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
+                                        : '',
+                                    ,
+                                    currentS2 == 0
+                                        ? 'bg-gray-500 text-white'
+                                        : '',
+                                    getLiHandicapCount(0 + i) == 0
+                                        ? 'opacity-30 cursor-not-allowed'
+                                        : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
+                                ]"
+                                @click="viewLi(0 + i)"
                             >
-                                {{ getHandicapCount(0.25 + i) }}
-                            </div>
-                        </button>
-                        <button
-                            class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-16 text-lg justify-center"
-                            :class="[
-                                selectedS2 == 0.5 + i
-                                    ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
-                                    : '',
-                                ,
-                                currentS2 == 0.5
-                                    ? 'bg-gray-500 text-white'
-                                    : '',
-                                getHandicapCount(0.5 + i) == 0
-                                    ? 'opacity-30 cursor-not-allowed'
-                                    : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
-                            ]"
-                            @click="viewS2(0.5 + i)"
-                        >
-                            {{ i == 0 ? "" : i }}½
-                            <div
-                                v-if="getHandicapCount(0.5 + i) > 0"
-                                class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                                {{ i == 0 ? "=" : i }}
+                                <div
+                                    v-if="getLiHandicapCount(0 + i) > 0"
+                                    class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                                >
+                                    {{ getLiHandicapCount(0 + i) }}
+                                </div>
+                            </button>
+                            <button
+                                class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-[80px] text-lg justify-center"
+                                :class="[
+                                    selectedLi == 0.25 + i
+                                        ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
+                                        : '',
+                                    ,
+                                    currentS2 == 0.25
+                                        ? 'bg-gray-500 text-white'
+                                        : '',
+                                    getLiHandicapCount(0.25 + i) == 0
+                                        ? 'opacity-30 cursor-not-allowed'
+                                        : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
+                                ]"
+                                @click="viewLi(0.25 + i)"
                             >
-                                {{ getHandicapCount(0.5 + i) }}
-                            </div>
-                        </button>
-                        <button
-                            class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-16 text-lg justify-center"
-                            :class="[
-                                selectedS2 == 0.75 + i
-                                    ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
-                                    : '',
-                                ,
-                                currentS2 == 0.75
-                                    ? 'bg-gray-500 text-white'
-                                    : '',
-                                getHandicapCount(0.75 + i) == 0
-                                    ? 'opacity-30 cursor-not-allowed'
-                                    : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
-                            ]"
-                            @click="viewS2(0.75 + i)"
-                        >
-                            {{ i == 0 ? "" : i }}½+{{ i + 1 }}
-                            <div
-                                v-if="getHandicapCount(0.75 + i) > 0"
-                                class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                                {{ i }}+½
+                                <div
+                                    v-if="getLiHandicapCount(0.25 + i) > 0"
+                                    class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                                >
+                                    {{ getLiHandicapCount(0.25 + i) }}
+                                </div>
+                            </button>
+                            <button
+                                class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-[80px] text-lg justify-center"
+                                :class="[
+                                    selectedLi == 0.5 + i
+                                        ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
+                                        : '',
+                                    ,
+                                    currentS2 == 0.5
+                                        ? 'bg-gray-500 text-white'
+                                        : '',
+                                    getLiHandicapCount(0.5 + i) == 0
+                                        ? 'opacity-30 cursor-not-allowed'
+                                        : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
+                                ]"
+                                @click="viewLi(0.5 + i)"
                             >
-                                {{ getHandicapCount(0.75 + i) }}
-                            </div>
-                        </button>
+                                {{ i == 0 ? "" : i }}½
+                                <div
+                                    v-if="getLiHandicapCount(0.5 + i) > 0"
+                                    class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                                >
+                                    {{ getLiHandicapCount(0.5 + i) }}
+                                </div>
+                            </button>
+                            <button
+                                class="relative inline-flex items-center bg-transparent font-semibold py-2 border border-gray-500 rounded w-[80px] text-lg justify-center"
+                                :class="[
+                                    selectedLi == 0.75 + i
+                                        ? '!bg-gray-500 !text-white border-transparent cursor-pointer'
+                                        : '',
+                                    ,
+                                    currentS2 == 0.75
+                                        ? 'bg-gray-500 text-white'
+                                        : '',
+                                    getLiHandicapCount(0.75 + i) == 0
+                                        ? 'opacity-30 cursor-not-allowed'
+                                        : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
+                                ]"
+                                @click="viewLi(0.75 + i)"
+                            >
+                                {{ i == 0 ? "" : i }}½+{{ i + 1 }}
+                                <div
+                                    v-if="getLiHandicapCount(0.75 + i) > 0"
+                                    class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
+                                >
+                                    {{ getLiHandicapCount(0.75 + i) }}
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div
@@ -169,6 +311,7 @@ import {
     fetch7mGames,
     getCorrectScoreMatch,
     fetchReportCountS2,
+    fetchReportCountLi,
 } from "@/Services/correct_score";
 import {
     extractTime,
@@ -209,7 +352,10 @@ export default defineComponent({
             isLoading: false,
             s20Count: [],
             liCount: [],
+            records: [],
+            selectedTab: "s2", // 's2' | 'li'
             selectedS2: null,
+            selectedLi: null,
         };
     },
     watch: {},
@@ -234,14 +380,42 @@ export default defineComponent({
                 this.isLoading = false;
             }
         },
+        async fetchReportRecords() {
+            try {
+                this.isLoading = true;
+                this.records = await fetchReportRecords(
+                    this.selectedS2,
+                    this.selectedLi
+                );
+            } catch (e) {
+                //
+            } finally {
+                this.isLoading = false;
+            }
+        },
         getHandicapCount(val) {
-            const count = this.s20Count.find((x) => x.f20a === val);
+            const count = this.s20Count.find(
+                (x) => Number(x.f20a) === Number(val)
+            );
+            return count ? count.count : 0;
+        },
+        getLiHandicapCount(val) {
+            const count = this.liCount.find(
+                (x) => Number(x.li) === Number(val)
+            );
             return count ? count.count : 0;
         },
         async viewS2(value) {
             if (this.getHandicapCount(value) > 0) {
                 this.selectedS2 = value;
+                this.selectedLi = null;
+                this.selectedTab = "li";
                 await this.fetchReportCountLi();
+            }
+        },
+        async viewLi(value) {
+            if (this.getLiHandicapCount(value) > 0) {
+                this.selectedLi = value;
             }
         },
     },

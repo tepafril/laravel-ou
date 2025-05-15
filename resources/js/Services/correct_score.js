@@ -142,3 +142,14 @@ export async function fetchReportCountLi(s2) {
     throw apiError(error, {})
   }
 }
+
+export async function fetchReportRecords(s2, li) {
+  try {
+    const response = await client().get(`report/records/${s2}/${li}`)
+    return response.data
+
+  } catch (error) {
+    console.error(error)
+    throw apiError(error, {})
+  }
+}
