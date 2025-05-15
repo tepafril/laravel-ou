@@ -145,9 +145,14 @@ export async function fetchReportCountLi(s2) {
 
 export async function fetchReportRecords(s2, li) {
   try {
+    let data = []
     const response = await client().get(`report/records/${s2}/${li}`)
+    data = [...data, response.data.data]
+    if (response.data.current_page < response.data.last_page) {
+      alert("more")
+      // fetchReportRecords
+    }
     return response.data
-
   } catch (error) {
     console.error(error)
     throw apiError(error, {})
