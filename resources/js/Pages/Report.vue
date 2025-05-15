@@ -312,6 +312,7 @@ import {
     getCorrectScoreMatch,
     fetchReportCountS2,
     fetchReportCountLi,
+    fetchReportRecords,
 } from "@/Services/correct_score";
 import {
     extractTime,
@@ -416,6 +417,7 @@ export default defineComponent({
         async viewLi(value) {
             if (this.getLiHandicapCount(value) > 0) {
                 this.selectedLi = value;
+                this.fetchReportRecords();
             }
         },
     },
