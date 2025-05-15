@@ -143,16 +143,39 @@ export async function fetchReportCountLi(s2) {
   }
 }
 
+
+export class Record{
+  data = [];
+  page = 1;
+
+  async fetchReportRecords(s2, li) {
+    try {
+      
+      let response = await client().get(`report/records/${s2}/${li}?page=${this.page}`)
+      this.data = [...this.data, response.data.data]
+      if (response.data.current_page < response.data.last_page) {
+        this.page++;
+        await this.fetchReportRecords(s2, li);
+      }
+    } catch (error) {
+      console.error(error)
+      throw apiError(error, {})
+    }
+  }
+}
+
 export async function fetchReportRecords(s2, li) {
   try {
+    let page = 1;
     let data = []
-    const response = await client().get(`report/records/${s2}/${li}`)
+    let response = await client().get(`report/records/${s2}/${li}?page=${page}`)
     data = [...data, response.data.data]
     if (response.data.current_page < response.data.last_page) {
-      alert("more")
-      // fetchReportRecords
+      page++;
+      response = await client().get(`report/records/${s2}/${li}?page=${page}`)
+      data = [...data, response.data.data]
     }
-    return response.data
+    return data
   } catch (error) {
     console.error(error)
     throw apiError(error, {})

@@ -312,7 +312,7 @@ import {
     getCorrectScoreMatch,
     fetchReportCountS2,
     fetchReportCountLi,
-    fetchReportRecords,
+    Record,
 } from "@/Services/correct_score";
 import {
     extractTime,
@@ -384,10 +384,12 @@ export default defineComponent({
         async fetchReportRecords() {
             try {
                 this.isLoading = true;
-                this.records = await fetchReportRecords(
+                const records = new Record();
+                await records.fetchReportRecords(
                     this.selectedS2,
                     this.selectedLi
                 );
+                console.log(records.data);
             } catch (e) {
                 //
             } finally {
@@ -417,7 +419,7 @@ export default defineComponent({
         async viewLi(value) {
             if (this.getLiHandicapCount(value) > 0) {
                 this.selectedLi = value;
-                this.fetchReportRecords();
+                await this.fetchReportRecords();
             }
         },
     },

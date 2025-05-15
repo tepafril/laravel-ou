@@ -32,13 +32,13 @@ class ReportController extends Controller
     }
 
 
-    public function getIgameRecords($s2, $li, $page = 1)
+    public function getIgameRecords($s2, $li)
     {
         // Get actual counts from database
-        $counts = Igame::select('*')
+        $counts = Igame::select('an, f20a, ftas, fths, gt, handi, hn, is_ov, is_wn, li, ln, lns, oo, uo')
             ->where('f20a', $s2)
             ->where('li', $li)
-            ->paginate(10);
+            ->paginate(100);
 
         return response()->json($counts);
     }
