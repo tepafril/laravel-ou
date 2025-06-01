@@ -1,5 +1,5 @@
 export const formatDate = function(inputString) {
-    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     const months = [
       "Jan",
       "Feb",
@@ -100,4 +100,16 @@ export const getHandicapByValue = (value) => {
   const index = arr.findIndex((v) => v == Math.abs(value))
 
   return index >= 0 ? getHandicap(index) : null;
+}
+
+export const getWinLabel = (val) =>{
+  const arr = {
+    "loss": "Lose",
+    "loss_half": "Lose Half",
+    "win": "Win",
+    "win_half": "Win Half",
+    "draw": "Draw",
+  }
+
+  return arr[val];
 }

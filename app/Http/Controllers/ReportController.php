@@ -50,7 +50,8 @@ class ReportController extends Controller
                 'ln',
                 'lns',
                 'oo',
-                'uo'
+                'uo',
+                'li'
             ])
             ->where('f20a', $s2)
             ->where('li', $li)

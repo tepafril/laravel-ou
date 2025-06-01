@@ -55,7 +55,7 @@
                                         ? 'bg-gray-500 text-white'
                                         : '',
                                     getHandicapCount(0 + i) == 0
-                                        ? 'opacity-30 cursor-not-allowed'
+                                        ? 'opacity-30 bg-gray-500 text-gray-700 cursor-not-allowed'
                                         : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
                                 ]"
                                 @click="viewS2(0 + i)"
@@ -79,7 +79,7 @@
                                         ? 'bg-gray-500 text-white'
                                         : '',
                                     getHandicapCount(0.25 + i) == 0
-                                        ? 'opacity-30 cursor-not-allowed'
+                                        ? 'opacity-30 bg-gray-500 text-gray-700 cursor-not-allowed'
                                         : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
                                 ]"
                                 @click="viewS2(0.25 + i)"
@@ -103,7 +103,7 @@
                                         ? 'bg-gray-500 text-white'
                                         : '',
                                     getHandicapCount(0.5 + i) == 0
-                                        ? 'opacity-30 cursor-not-allowed'
+                                        ? 'opacity-30 bg-gray-500 text-gray-700 cursor-not-allowed'
                                         : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
                                 ]"
                                 @click="viewS2(0.5 + i)"
@@ -127,7 +127,7 @@
                                         ? 'bg-gray-500 text-white'
                                         : '',
                                     getHandicapCount(0.75 + i) == 0
-                                        ? 'opacity-30 cursor-not-allowed'
+                                        ? 'opacity-30 bg-gray-500 text-gray-700 cursor-not-allowed'
                                         : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
                                 ]"
                                 @click="viewS2(0.75 + i)"
@@ -161,7 +161,7 @@
                                         ? 'bg-gray-500 text-white'
                                         : '',
                                     getLiHandicapCount(0 + i) == 0
-                                        ? 'opacity-30 cursor-not-allowed'
+                                        ? 'opacity-30 bg-gray-500 text-gray-700 cursor-not-allowed'
                                         : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
                                 ]"
                                 @click="viewLi(0 + i)"
@@ -185,7 +185,7 @@
                                         ? 'bg-gray-500 text-white'
                                         : '',
                                     getLiHandicapCount(0.25 + i) == 0
-                                        ? 'opacity-30 cursor-not-allowed'
+                                        ? 'opacity-30 bg-gray-500 text-gray-700 cursor-not-allowed'
                                         : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
                                 ]"
                                 @click="viewLi(0.25 + i)"
@@ -209,7 +209,7 @@
                                         ? 'bg-gray-500 text-white'
                                         : '',
                                     getLiHandicapCount(0.5 + i) == 0
-                                        ? 'opacity-30 cursor-not-allowed'
+                                        ? 'opacity-30 bg-gray-500 text-gray-700 cursor-not-allowed'
                                         : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
                                 ]"
                                 @click="viewLi(0.5 + i)"
@@ -233,7 +233,7 @@
                                         ? 'bg-gray-500 text-white'
                                         : '',
                                     getLiHandicapCount(0.75 + i) == 0
-                                        ? 'opacity-30 cursor-not-allowed'
+                                        ? 'opacity-30 bg-gray-500 text-gray-700 cursor-not-allowed'
                                         : 'hover:bg-gray-500 text-gray-700 hover:text-white hover:border-transparent cursor-pointer',
                                 ]"
                                 @click="viewLi(0.75 + i)"
@@ -280,17 +280,123 @@
                                             <template
                                                 v-for="homeRec in record.home"
                                             >
-                                                <SvgIcon
-                                                    :name="
-                                                        getSign(homeRec, 'home')
-                                                    "
-                                                    :color="
-                                                        getColor(
-                                                            homeRec,
-                                                            'home'
-                                                        )
-                                                    "
-                                                />
+                                                <div class="tooltip">
+                                                    <div
+                                                        class="tooltip-content text-left p-2"
+                                                    >
+                                                        <div>{{ homeRec }}</div>
+                                                        <div
+                                                            class="text-xl text-left"
+                                                        >
+                                                            {{ homeRec.ln }}
+                                                        </div>
+                                                        <div
+                                                            class="text-xl text-left"
+                                                        >
+                                                            <div
+                                                                class="text-white flex items-center"
+                                                            >
+                                                                <span>
+                                                                    {{
+                                                                        formatDate(
+                                                                            homeRec.gt
+                                                                        )
+                                                                    }}
+                                                                </span>
+                                                                <span
+                                                                    class="mx-1"
+                                                                >
+                                                                    <img
+                                                                        src="/img/clock.svg"
+                                                                        alt=""
+                                                                    />
+                                                                </span>
+                                                                <span>
+                                                                    {{
+                                                                        extractTime(
+                                                                            homeRec.gt
+                                                                        )
+                                                                    }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-xl">
+                                                            <span
+                                                                class="text-blue-400"
+                                                                >{{
+                                                                    homeRec.hn
+                                                                }}</span
+                                                            >
+                                                            <span
+                                                                >&nbsp;
+                                                                {{
+                                                                    homeRec.fths
+                                                                }}
+                                                                -
+                                                                {{
+                                                                    homeRec.ftas
+                                                                }}&nbsp;
+                                                            </span>
+                                                            <span
+                                                                class="text-red-400"
+                                                                >{{
+                                                                    homeRec.an
+                                                                }}</span
+                                                            >
+                                                        </div>
+
+                                                        <div
+                                                            class="text-xl text-left"
+                                                        >
+                                                            Handicap
+                                                            {{
+                                                                getHandicapByValue(
+                                                                    homeRec.f20a
+                                                                )
+                                                            }}
+                                                            |
+                                                            {{
+                                                                homeRec.handi ==
+                                                                "home"
+                                                                    ? "Home"
+                                                                    : "Away"
+                                                            }}
+                                                            {{
+                                                                getWinLabel(
+                                                                    homeRec.is_wn
+                                                                )
+                                                            }}
+                                                        </div>
+
+                                                        <div
+                                                            class="text-xl text-left uppercase"
+                                                        >
+                                                            {{
+                                                                getHandicapByValue(
+                                                                    homeRec.li
+                                                                )
+                                                            }}
+                                                            ({{
+                                                                homeRec.is_ov
+                                                            }}
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <SvgIcon
+                                                        :name="
+                                                            getSign(
+                                                                homeRec,
+                                                                'home'
+                                                            )
+                                                        "
+                                                        :color="
+                                                            getColor(
+                                                                homeRec,
+                                                                'home'
+                                                            )
+                                                        "
+                                                    />
+                                                </div>
                                             </template>
                                         </div>
                                         <div class="flex items-center">
@@ -366,6 +472,7 @@ import {
     formatDate,
     findMatchingIndices,
     getHandicap,
+    getWinLabel,
 } from "@/Types/func/index";
 import { HANDICAP } from "@/Types/const/index";
 
@@ -396,6 +503,10 @@ export default defineComponent({
     },
     data() {
         return {
+            formatDate,
+            extractTime,
+            getHandicapByValue,
+            getWinLabel,
             isLoading: false,
             s20Count: [],
             liCount: [],

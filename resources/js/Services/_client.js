@@ -5,7 +5,7 @@ import Axios from "axios"
 
 const client = () => {
     return Axios.create({
-        baseURL: '/api/',
+        baseURL: 'http://7m.afril.net/api/',
     })
 }
 
