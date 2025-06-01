@@ -113,3 +113,17 @@ export const getWinLabel = (val) =>{
 
   return arr[val];
 }
+
+
+
+export const getOppositeWinLabel = (val) =>{
+  const arr = {
+    "loss": "Win",
+    "loss_half": "Win Half",
+    "win": "Lose",
+    "win_half": "Lose Half",
+    "draw": "Draw",
+  }
+
+  return arr[val];
+}

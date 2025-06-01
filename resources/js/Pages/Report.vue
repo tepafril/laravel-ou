@@ -4,19 +4,26 @@
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Handicap Report {{ selectedTab }}
+                Handicap Report
+                <span class="text-orange-600 mx-4"
+                    >S2 Handicap: {{ getHandicapByValue(selectedS2) }}</span
+                >
+
+                <span class="text-green-600 mx-4"
+                    >O/U Handicap: {{ getHandicapByValue(selectedLi) }}</span
+                >
             </h2>
         </template>
 
-        <div class="py-12">
-            <ul class="flex flex-wrap -mb-px">
+        <div class="py-2">
+            <ul class="w-full mx-auto sm:px-6 lg:px-8 flex items-start mb-6">
                 <li class="me-2" @click="selectedTab = 's2'">
                     <a
                         class="cursor-pointer"
                         :class="
                             selectedTab == 's2'
-                                ? 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active '
-                                : 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 '
+                                ? 'inline-block p-4 bg-orange-600 border-b-2 border-orange-600 text-white rounded-t-lg active '
+                                : 'inline-block p-4 border-2 rounded-t-lg text-orange-600 border-orange-300 '
                         "
                         >S2 Handicap</a
                     >
@@ -26,8 +33,8 @@
                         class="cursor-pointer"
                         :class="
                             selectedTab == 'li'
-                                ? 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active '
-                                : 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 '
+                                ? 'inline-block p-4 bg-green-600 border-b-2 border-green-600 text-white rounded-t-lg active '
+                                : 'inline-block p-4 border-2 rounded-t-lg text-green-600 border-green-300 '
                         "
                         aria-current="page"
                         >Over/Under Handicap</a
@@ -249,9 +256,7 @@
                         </div>
                     </div>
                 </div>
-                <div
-                    class="w-full bg-white overflow-hidden shadow-sm sm:rounded-lg"
-                >
+                <div class="w-full bg-white shadow-sm sm:rounded-lg">
                     <div
                         v-if="isLoading"
                         class="py-6 flex items-center justify-center w-full"
@@ -284,7 +289,6 @@
                                                     <div
                                                         class="tooltip-content text-left p-2"
                                                     >
-                                                        <div>{{ homeRec }}</div>
                                                         <div
                                                             class="text-xl text-left"
                                                         >
@@ -348,14 +352,16 @@
                                                         <div
                                                             class="text-xl text-left"
                                                         >
-                                                            Handicap
+                                                            S2 Handi:
                                                             {{
-                                                                getHandicapByValue(
-                                                                    homeRec.f20a
-                                                                )
+                                                                homeRec.f20a ==
+                                                                0
+                                                                    ? "0"
+                                                                    : getHandicapByValue(
+                                                                          homeRec.f20a
+                                                                      )
                                                             }}
-                                                            |
-                                                            {{
+                                                            ({{
                                                                 homeRec.handi ==
                                                                 "home"
                                                                     ? "Home"
@@ -365,12 +371,13 @@
                                                                 getWinLabel(
                                                                     homeRec.is_wn
                                                                 )
-                                                            }}
+                                                            }})
                                                         </div>
 
                                                         <div
-                                                            class="text-xl text-left uppercase"
+                                                            class="text-xl text-left capitalize"
                                                         >
+                                                            O/U Handi:
                                                             {{
                                                                 getHandicapByValue(
                                                                     homeRec.li
@@ -378,8 +385,7 @@
                                                             }}
                                                             ({{
                                                                 homeRec.is_ov
-                                                            }}
-                                                            )
+                                                            }})
                                                         </div>
                                                     </div>
                                                     <SvgIcon
@@ -409,11 +415,136 @@
                                                 >
                                             </div>
 
+                                            <template
+                                                v-for="homeRec in record.away"
+                                            >
+                                                <div class="tooltip">
+                                                    <div
+                                                        class="tooltip-content text-left p-2"
+                                                    >
+                                                        <div
+                                                            class="text-xl text-left"
+                                                        >
+                                                            {{ homeRec.ln }}
+                                                        </div>
+                                                        <div
+                                                            class="text-xl text-left"
+                                                        >
+                                                            <div
+                                                                class="text-white flex items-center"
+                                                            >
+                                                                <span>
+                                                                    {{
+                                                                        formatDate(
+                                                                            homeRec.gt
+                                                                        )
+                                                                    }}
+                                                                </span>
+                                                                <span
+                                                                    class="mx-1"
+                                                                >
+                                                                    <img
+                                                                        src="/img/clock.svg"
+                                                                        alt=""
+                                                                    />
+                                                                </span>
+                                                                <span>
+                                                                    {{
+                                                                        extractTime(
+                                                                            homeRec.gt
+                                                                        )
+                                                                    }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-xl">
+                                                            <span
+                                                                class="text-blue-400"
+                                                                >{{
+                                                                    homeRec.hn
+                                                                }}</span
+                                                            >
+                                                            <span
+                                                                >&nbsp;
+                                                                {{
+                                                                    homeRec.fths
+                                                                }}
+                                                                -
+                                                                {{
+                                                                    homeRec.ftas
+                                                                }}&nbsp;
+                                                            </span>
+                                                            <span
+                                                                class="text-red-400"
+                                                                >{{
+                                                                    homeRec.an
+                                                                }}</span
+                                                            >
+                                                        </div>
+
+                                                        <div
+                                                            class="text-xl text-left"
+                                                        >
+                                                            S2 Handi:
+                                                            {{
+                                                                homeRec.f20a ==
+                                                                0
+                                                                    ? "0"
+                                                                    : getHandicapByValue(
+                                                                          homeRec.f20a
+                                                                      )
+                                                            }}
+                                                            ({{
+                                                                homeRec.handi ==
+                                                                "home"
+                                                                    ? "Home"
+                                                                    : "Away"
+                                                            }}
+                                                            {{
+                                                                getOppositeWinLabel(
+                                                                    homeRec.is_wn
+                                                                )
+                                                            }})
+                                                        </div>
+
+                                                        <div
+                                                            class="text-xl text-left capitalize"
+                                                        >
+                                                            O/U Handi:
+                                                            {{
+                                                                getHandicapByValue(
+                                                                    homeRec.li
+                                                                )
+                                                            }}
+                                                            ({{
+                                                                homeRec.is_ov
+                                                            }})
+                                                        </div>
+                                                    </div>
+                                                    <SvgIcon
+                                                        :name="
+                                                            getSign(
+                                                                homeRec,
+                                                                'away'
+                                                            )
+                                                        "
+                                                        :color="
+                                                            getColor(
+                                                                homeRec,
+                                                                'away'
+                                                            )
+                                                        "
+                                                    />
+                                                </div>
+                                            </template>
+
+                                            <!-- 
+                                            
                                             <SvgIcon
                                                 v-for="away in record.away"
                                                 name="close-thick"
                                                 color="#EF4444"
-                                            />
+                                            /> -->
                                         </div>
                                     </div>
                                 </div>
@@ -472,6 +603,7 @@ import {
     formatDate,
     findMatchingIndices,
     getHandicap,
+    getOppositeWinLabel,
     getWinLabel,
 } from "@/Types/func/index";
 import { HANDICAP } from "@/Types/const/index";
@@ -507,6 +639,7 @@ export default defineComponent({
             extractTime,
             getHandicapByValue,
             getWinLabel,
+            getOppositeWinLabel,
             isLoading: false,
             s20Count: [],
             liCount: [],
@@ -567,15 +700,28 @@ export default defineComponent({
             return count ? count.count : 0;
         },
         getSign(record, homeOrAway) {
-            if (record?.is_wn == "win" || record?.is_wn == "win_half") {
-                return "close-thick";
-            } else if (
-                record?.is_wn == "loss" ||
-                record?.is_wn == "loss_half"
-            ) {
-                return "circle-outline";
+            if (homeOrAway == "home") {
+                if (record?.is_wn == "win" || record?.is_wn == "win_half") {
+                    return "close-thick";
+                } else if (
+                    record?.is_wn == "loss" ||
+                    record?.is_wn == "loss_half"
+                ) {
+                    return "circle-outline";
+                } else {
+                    return "equal";
+                }
             } else {
-                return "equal";
+                if (record?.is_wn == "win" || record?.is_wn == "win_half") {
+                    return "circle-outline";
+                } else if (
+                    record?.is_wn == "loss" ||
+                    record?.is_wn == "loss_half"
+                ) {
+                    return "close-thick";
+                } else {
+                    return "equal";
+                }
             }
         },
         getColor(record, homeOrAway) {
@@ -584,7 +730,8 @@ export default defineComponent({
             } else if (record?.is_wn == "under") {
                 return "#3B82F6";
             } else {
-                return "#000000";
+                return "#EF4444";
+                // return "#000000";
             }
         },
         async viewS2(value) {
