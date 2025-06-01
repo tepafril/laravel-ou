@@ -22,11 +22,12 @@
                         class="cursor-pointer"
                         :class="
                             selectedTab == 's2'
-                                ? 'inline-block p-4 bg-orange-600 border-b-2 border-orange-600 text-white rounded-t-lg active '
+                                ? 'inline-block p-4 bg-orange-600 border-b-2 border-orange-600 text-white rounded-t-lg  '
                                 : 'inline-block p-4 border-2 rounded-t-lg text-orange-600 border-orange-300 '
                         "
-                        >S2 Handicap</a
                     >
+                        S2 Handicap: {{ getHandicapByValue(selectedS2) }}
+                    </a>
                 </li>
                 <li class="me-2" @click="selectedTab = 'li'">
                     <a
@@ -37,7 +38,8 @@
                                 : 'inline-block p-4 border-2 rounded-t-lg text-green-600 border-green-300 '
                         "
                         aria-current="page"
-                        >Over/Under Handicap</a
+                        >Over/Under Handicap:
+                        {{ getHandicapByValue(selectedLi) }}</a
                     >
                 </li>
             </ul>
@@ -91,7 +93,7 @@
                                 ]"
                                 @click="viewS2(0.25 + i)"
                             >
-                                {{ i }}+½
+                                {{ i }}+{{ i == 0 ? "" : i }}½
                                 <div
                                     v-if="getHandicapCount(0.25 + i) > 0"
                                     class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
@@ -197,7 +199,7 @@
                                 ]"
                                 @click="viewLi(0.25 + i)"
                             >
-                                {{ i }}+½
+                                {{ i }}+{{ i == 0 ? "" : i }}½
                                 <div
                                     v-if="getLiHandicapCount(0.25 + i) > 0"
                                     class="absolute inline-flex items-center justify-center px-1 h-6 text-xs text-white bg-red-500 border-2 border-white rounded-md -top-2 -end-2"
