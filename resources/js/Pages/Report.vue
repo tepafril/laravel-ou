@@ -294,6 +294,11 @@
                                                         <div
                                                             class="text-xl text-left"
                                                         >
+                                                            #{{ homeRec.id }}
+                                                        </div>
+                                                        <div
+                                                            class="text-xl text-left"
+                                                        >
                                                             {{ homeRec.ln }}
                                                         </div>
                                                         <div
@@ -424,6 +429,11 @@
                                                     <div
                                                         class="tooltip-content text-left p-2"
                                                     >
+                                                        <div
+                                                            class="text-xl text-left"
+                                                        >
+                                                            #{{ homeRec.id }}
+                                                        </div>
                                                         <div
                                                             class="text-xl text-left"
                                                         >
